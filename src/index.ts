@@ -1,14 +1,10 @@
-// Core Homie classes
-export { HomieProperty } from './HomieProperty';
-export { HomieNode } from './HomieNode';
-export { HomieDevice } from './HomieDevice';
+import { HomieDeviceElement } from './HomieDeviceElement';
 
-// DOM integration
-export { PropertyBindingManager } from './PropertyBindingManager';
-export { HomieNodeComponent } from './HomieNodeComponent';
-export { HomieDeviceElement } from './HomieDeviceElement';
+import { CoralReef } from './CoralReef';
 
-// Example classes
-export { CoralBranch } from './CoralBranch';
-export { PlayerAvatar } from './PlayerAvatar';
-export { CoralReef } from './CoralReef';
+
+const coralReef = new CoralReef('My Coral Reef');
+const deviceElement = new HomieDeviceElement();
+deviceElement.device = coralReef;
+
+document.getElementById('app')?.appendChild(deviceElement);

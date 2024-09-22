@@ -9,6 +9,10 @@ export class HomieDevice {
     this.nodes.set(node.name, node);
   }
 
+  removeNode(node: HomieNode){
+    this.nodes.delete(node.name);
+  }
+
   getNode(name: string): HomieNode | undefined {
     return this.nodes.get(name);
   }
