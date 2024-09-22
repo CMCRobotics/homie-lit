@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home-Lit Demo</title>
+</head>
+<body>
+    <div id="app"></div>
+    <script type="module">
+        import { CoralReef, HomieDeviceElement } from './index.ts';
+
+        const coralReef = new CoralReef('My Coral Reef');
+        const deviceElement = new HomieDeviceElement(coralReef);
+
+        document.getElementById('app').appendChild(deviceElement);
+    </script>
+</body>
+</html>
