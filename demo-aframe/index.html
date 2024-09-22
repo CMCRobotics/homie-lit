@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Homie-Lit A-Frame Demo</title>
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <script src="/homie-lit.js"></script>
+    <script src="aframe-demo.js"></script>
+    <style>
+        body { margin: 0; padding: 0; }
+        #info {
+            position: absolute;
+            top: 10px;
+            width: 100%;
+            text-align: center;
+            color: white;
+            background-color: rgba(0,0,0,0.5);
+            padding: 10px;
+            font-family: Arial, sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <div id="info">
+        <h1>Homie-Lit A-Frame Demo</h1>
+        <p>Click on the light switch to toggle the light bulb.</p>
+    </div>
+    <a-scene>
+        <a-camera position="0 1 1" look-controls>
+            <a-entity cursor="fuse: true; fuseTimeout: 500"
+            position="0 0 -1"
+            geometry="primitive: ring; radiusInner: 0.02; radiusOuter: 0.03"
+            material="color: black; shader: flat; opacity: 0.7">
+            </a-entity>
+
+        </a-camera>
+
+        <a-entity homie-light-switch position="-1 0.5 -3" rotation="0 30 0"></a-entity>
+        <a-entity homie-light-bulb position="1 0.5 -3" rotation="0 -30 0"></a-entity>
+
+        <a-sky color="#ECECEC"></a-sky>
+        <a-plane position="0 0 -4" rotation="-90 0 0" width="4" height="4" color="#7BC8A4"></a-plane>
+    </a-scene>
+    <script>
+        // Connect devices after scene loaded
+        document.querySelector('a-scene').addEventListener('loaded', function () {
+            // const switchDevice = document.querySelector('[homie-light-switch]').components['homie-light-switch'].device;
+            // const bulbDevice = document.querySelector('[homie-light-bulb]').components['homie-light-bulb'].device;
+
+            // // Connect switch state to bulb state
+            // switchDevice.getNode('switch').getProperty('state').on('value', (value) => {
+            //   bulbDevice.getNode('bulb').getProperty('state').setValue(value);
+            // });
+        });
+</body>
+</html>
