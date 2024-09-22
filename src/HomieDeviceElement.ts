@@ -20,8 +20,7 @@ export class HomieDeviceElement extends LitElement {
   render() {
     return html`
       <div class="homie-device">
-        <h1>${this.device.name}</h1>
-        ${this.device.getAllNodes().map(node => html`
+        ${this.device?.getAllNodes().map(node => html`
           <homie-node .node=${node}></homie-node>
         `)}
       </div>

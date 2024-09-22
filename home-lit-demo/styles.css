@@ -1,0 +1,50 @@
+body {
+    font-family: Arial, sans-serif;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+}
+
+.container {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 40px;
+}
+
+.device {
+    text-align: center;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+homie-light-switch, homie-light-bulb {
+    display: inline-block;
+    width: 100px;
+    height: 100px;
+    border: 2px solid #333;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+homie-light-switch[state="on"] {
+    background-color: #ffff00;
+}
+
+homie-light-switch[state="off"] {
+    background-color: #cccccc;
+}
+
+homie-light-bulb[state="on"] {
+    background-color: #ffff00;
+    box-shadow: 0 0 20px #ffff00;
+}
+
+homie-light-bulb[state="off"] {
+    background-color: #ffffff;
+    box-shadow: none;
+}

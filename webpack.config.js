@@ -1,5 +1,4 @@
 const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   entry: './src/index.ts',
@@ -16,14 +15,12 @@ module.exports = {
     extensions: ['.tsx', '.ts', '.js'],
   },
   output: {
-    filename: 'bundle.js',
+    filename: 'homie-lit.js',
     path: path.resolve(__dirname, 'dist'),
+    library: 'HomieLit',
+    libraryTarget: 'umd',
+    globalObject: 'this',
   },
-  plugins: [
-    new HtmlWebpackPlugin({
-      template: 'src/index.html',
-    }),
-  ],
   devServer: {
     static: path.join(__dirname, 'dist'),
     compress: true,

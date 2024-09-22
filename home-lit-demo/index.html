@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home-Lit Demo: Light Switch and Light Bulb</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="http://localhost:9000/homie-lit.js"></script>
+    <script src="./js/main.js" type="module"></script>
+</head>
+<body>
+    <h1>Homie-Lit Demo: Light Switch and Light Bulb</h1>
+
+    
+    <light-switch id="myLightSwitch"></light-switch>
+    <light-bulb-device id="myLightBulb"></light-bulb-device>
+
+   <!-- <homie-device id="myDevice"></homie-device>
+
+
+    <script>
+        // The library is available globally as HomieLit
+        const { HomieDevice, HomieNode, HomieProperty } = HomieLit;
+
+        // Create a Homie device
+        const device = new HomieDevice('my-device', 'My Device');
+
+        // Create a node
+        const node = new HomieNode('my-node', 'My Node', 'sensor');
+        device.addNode(node);
+
+        // Add a property to the node
+        const property = new HomieProperty('temperature', 'Temperature', 'float');
+        node.addProperty(property);
+
+        // // Set the value of the property
+        property.setValue(22.5);
+
+        // // Get the homie-device element and set its device property
+        const deviceElement = document.getElementById('myDevice');
+        deviceElement.device = device;
+    </script> -->
+</body>
+</html>

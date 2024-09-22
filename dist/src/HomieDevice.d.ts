@@ -4,6 +4,7 @@ export declare class HomieDevice {
     private nodes;
     constructor(name: string);
     addNode(node: HomieNode): void;
+    removeNode(node: HomieNode): void;
     getNode(name: string): HomieNode | undefined;
     getAllNodes(): HomieNode[];
 }
