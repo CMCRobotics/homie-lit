@@ -16,12 +16,6 @@ jobs:
       contents: read
       packages: write
 
-    services:
-      mqtt:
-        image: eclipse-mosquitto
-        ports:
-          - 1883:1883
-
     steps:
     - uses: actions/checkout@v2
     
@@ -37,6 +31,14 @@ jobs:
     
     - name: Run unit tests
       run: npm test
+
+    - name: Start Mosquitto
+        uses: namoshek/mosquitto-github-action@v1
+        with:
+          version: '1.6'
+          ports: '1883:1883'
+          container-name: 'mqtt'
+
     - name: Wait for MQTT broker
       run: |
         docker ps -a  &
