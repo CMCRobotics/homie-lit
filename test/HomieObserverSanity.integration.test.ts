@@ -25,11 +25,8 @@ describe('HomieObserver Simple Integration Test', () => {
       
       if (client.connected) {
         client.end(false, {}, () => {
-          if ((observer as any).client && typeof (observer as any).client.end === 'function') {
-            (observer as any).client.end(false, {}, done);
-          } else if (typeof (observer as any).disconnect === 'function') {
-            (observer as any).disconnect();
-            done();
+          if ((observer as any).messageHandler && typeof (observer as any).messageHandler.end === 'function') {
+            (observer as any).messageHandler.end(false, {}, done);
           } else {
             done();
           }
@@ -46,21 +43,9 @@ describe('HomieObserver Simple Integration Test', () => {
     const deviceId = 'test-device';
     let eventReceived = false;
 
-    // Subscribe to the Homie device topic
+    // Subscribe to the Homie device topic using the new subscribe method
     const subscribeTopic = `${homiePrefix}/${deviceId}/#`;
-    if (typeof (observer as any).subscribe === 'function') {
-      (observer as any).subscribe(subscribeTopic);
-    } else if ((observer as any).client && typeof (observer as any).client.subscribe === 'function') {
-      (observer as any).client.subscribe(subscribeTopic, (err: any) => {
-        if (err) {
-          console.error('Failed to subscribe:', err);
-          done(err);
-        }
-      });
-    } else {
-      done(new Error('Unable to subscribe to MQTT topic'));
-      return;
-    }
+    observer.subscribe(subscribeTopic);
 
     subscriptions.push(observer.created$.subscribe(
       (event) => {

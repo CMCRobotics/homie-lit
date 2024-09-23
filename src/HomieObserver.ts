@@ -49,6 +49,7 @@ type HomieEvent = HomieDeviceEvent | HomieNodeEvent | HomiePropertyEvent;
 // Interface for MQTT message handler
 interface MqttMessageHandler {
   handleMessage(topic: string, message: Buffer): void;
+  subscribe(topic: string): void;
 }
 
 // MQTT Client class
@@ -127,6 +128,11 @@ class HomieObserver {
 
   constructor(private messageHandler: MqttMessageHandler) {}
 
+  
+  public subscribe(topic: string): void {
+    this.messageHandler.subscribe(topic);
+  }
+
   public get created$(): Observable<HomieEvent> {
     return this.onCreate.asObservable();
   }
@@ -204,14 +210,15 @@ class HomieObserver {
 
 // Factory function to create HomieObserver with MQTT client
 function createMqttHomieObserver(brokerUrl: string, options: { homiePrefix?: string } = {}): HomieObserver {
-    let observer: HomieObserver;
-    const mqttClient = new MqttClient(brokerUrl, options, (event: HomieEvent) => {
-      if (observer) {
-        observer.processEvent(event);
-      }
-    });
-    observer = new HomieObserver(mqttClient);
-    return observer;
+  let observer: HomieObserver;
+  const mqttClient = new MqttClient(brokerUrl, options, (event: HomieEvent) => {
+    if (observer) {
+      observer.processEvent(event);
+    }
+  });
+  observer = new HomieObserver(mqttClient);
+  return observer;
 }
+
 
 export { HomieObserver, MqttClient, MqttMessageHandler, createMqttHomieObserver, HomieEventType, HomieEvent };
