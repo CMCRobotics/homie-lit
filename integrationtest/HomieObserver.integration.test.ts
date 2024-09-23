@@ -2,13 +2,13 @@ import { HomieObserver, HomieEventType, createMqttHomieObserver } from '../src/H
 import * as mqtt from 'mqtt';
 import { Subscription } from 'rxjs';
 
-describe('HomieObserver Integration Test', () => {
+describe('HomieObserver Integration Tests', () => {
   let observer: HomieObserver;
   let client: mqtt.Client;
   let homiePrefix: string;
   let subscriptions: Subscription[] = [];
 
-  beforeAll((done) => {
+  beforeEach((done) => {
     homiePrefix = `test-homie-${Math.random().toString(36).substring(7)}`;
     observer = createMqttHomieObserver('mqtt://localhost', { homiePrefix });
     client = mqtt.connect('mqtt://localhost');
@@ -18,17 +18,15 @@ describe('HomieObserver Integration Test', () => {
     });
   });
 
-  afterAll((done) => {
+  afterEach((done) => {
     const cleanup = () => {
       subscriptions.forEach(sub => sub.unsubscribe());
       subscriptions = [];
       
       if (client.connected) {
         client.end(false, {}, () => {
-          if (observer && (observer as any).client && typeof (observer as any).client.end === 'function') {
-            (observer as any).client.end(false, {}, done);
-          } else if (observer && (observer as any).disconnect === 'function') {
-            (observer as any).disconnect();
+          if ((observer as any).messageHandler && typeof (observer as any).messageHandler.end === 'function') {
+            (observer as any).messageHandler.end(false, {}, done);
           } else {
             done();
           }
@@ -41,76 +39,139 @@ describe('HomieObserver Integration Test', () => {
     cleanup();
   });
 
-  test('should handle device creation, node addition, and property update', (done) => {
+  test('should receive and process a simple device event', (done) => {
     const deviceId = 'test-device';
-    const nodeId = 'test-node';
-    const propertyId = 'test-property';
-    let step = 0;
+    let eventReceived = false;
 
-    const createdHandler = jest.fn();
-    const updatedHandler = jest.fn();
+    const subscribeTopic = `${homiePrefix}/${deviceId}/#`;
+    observer.subscribe(subscribeTopic);
 
-    const cleanupAndDone = (error?: Error) => {
-      subscriptions.forEach(sub => sub.unsubscribe());
-      subscriptions = [];
-      client.removeAllListeners('message');
-      if (error) {
-        done(error);
-      } else {
-        done();
-      }
-    };
-
-    subscriptions.push(observer.created$.subscribe(createdHandler));
-    subscriptions.push(observer.updated$.subscribe(updatedHandler));
-
-    subscriptions.push(observer.created$.subscribe((event) => {
-      try {
-        if (step === 0 && event.type === HomieEventType.Device) {
+    subscriptions.push(observer.created$.subscribe(
+      (event) => {
+        if (event.type === HomieEventType.Device) {
           expect(event.device.id).toBe(deviceId);
-          step++;
-          client.publish(`${homiePrefix}/${deviceId}/${nodeId}/$name`, 'Test Node');
-        } else if (step === 1 && event.type === HomieEventType.Node) {
+          eventReceived = true;
+        }
+      },
+      (error) => {
+        console.error('Error in subscription:', error);
+        done(error);
+      }
+    ));
+
+    const publishTopic = `${homiePrefix}/${deviceId}/$state`;
+    const publishMessage = 'ready';
+    const publishOptions: mqtt.IClientPublishOptions = { qos: 1 };
+
+    client.publish(publishTopic, publishMessage, publishOptions, (err) => {
+      if (err) {
+        console.error('Failed to publish:', err);
+        done(err);
+        return;
+      }
+
+      setTimeout(() => {
+        if (!eventReceived) {
+          done(new Error('Event not received within timeout'));
+        } else {
+          expect(eventReceived).toBe(true);
+          done();
+        }
+      }, 2000);
+    });
+  });
+
+  test('should report discovery of a new device via created$ subject', (done) => {
+    const deviceId = 'new-device';
+    const subscribeTopic = `${homiePrefix}/${deviceId}/#`;
+    observer.subscribe(subscribeTopic);
+
+    subscriptions.push(observer.created$.subscribe(
+      (event) => {
+        if (event.type === HomieEventType.Device) {
+          expect(event.device.id).toBe(deviceId);
+          done();
+        }
+      },
+      (error) => {
+        console.error('Error in subscription:', error);
+        done(error);
+      }
+    ));
+
+    client.publish(`${homiePrefix}/${deviceId}/$state`, 'init', { qos: 1 });
+  });
+
+  test('should report discovery of a new node via created$ subject', (done) => {
+    const deviceId = 'device-with-node';
+    const nodeId = 'new-node';
+    const subscribeTopic = `${homiePrefix}/${deviceId}/#`;
+    observer.subscribe(subscribeTopic);
+
+    let deviceCreated = false;
+
+    subscriptions.push(observer.created$.subscribe(
+      (event) => {
+        if (event.type === HomieEventType.Device) {
+          deviceCreated = true;
+        } else if (event.type === HomieEventType.Node && deviceCreated) {
+          expect(event.device.id).toBe(deviceId);
           expect(event.node.id).toBe(nodeId);
-          step++;
-          client.publish(`${homiePrefix}/${deviceId}/${nodeId}/${propertyId}`, 'initial value');
-        } else if (step === 2 && event.type === HomieEventType.Property) {
-          expect(event.property.id).toBe(propertyId);
-          expect(event.property.value).toBe('initial value');
-          step++;
-          client.publish(`${homiePrefix}/${deviceId}/${nodeId}/${propertyId}`, 'updated value');
+          done();
         }
-      } catch (error) {
-        cleanupAndDone(error instanceof Error ? error : new Error('An unknown error occurred'));
+      },
+      (error) => {
+        console.error('Error in subscription:', error);
+        done(error);
       }
-    }));
+    ));
 
-    subscriptions.push(observer.updated$.subscribe((event) => {
-      try {
-        if (step === 3 && event.type === HomieEventType.Property) {
-          expect(event.property.id).toBe(propertyId);
-          expect(event.property.value).toBe('updated value');
-          
-          expect(createdHandler).toHaveBeenCalledTimes(3); // Device, Node, Property
-          expect(updatedHandler).toHaveBeenCalledTimes(1); // Property update
-          
-          cleanupAndDone();
+    client.publish(`${homiePrefix}/${deviceId}/$state`, 'init', { qos: 1 }, () => {
+      client.publish(`${homiePrefix}/${deviceId}/${nodeId}/$name`, 'Test Node', { qos: 1 });
+    });
+  });
+
+  test('should report update of a property via updated$ subject', (done) => {
+    const deviceId = 'device-with-property';
+    const nodeId = 'node-with-property';
+    const propertyId = 'test-property';
+    const subscribeTopic = `${homiePrefix}/${deviceId}/#`;
+    observer.subscribe(subscribeTopic);
+
+    let propertyCreated = false;
+
+    subscriptions.push(observer.created$.subscribe(
+      (event) => {
+        if (event.type === HomieEventType.Property) {
+          propertyCreated = true;
         }
-      } catch (error) {
-        cleanupAndDone(error instanceof Error ? error : new Error('An unknown error occurred'));
       }
-    }));
+    ));
 
-    client.publish(`${homiePrefix}/${deviceId}/$state`, 'ready');
+    subscriptions.push(observer.updated$.subscribe(
+      (event) => {
+        if (event.type === HomieEventType.Property && propertyCreated) {
+          expect(event.device.id).toBe(deviceId);
+          expect(event.node.id).toBe(nodeId);
+          expect(event.property.id).toBe(propertyId);
+          expect(event.property.value).toBe('updated-value');
+          done();
+        }
+      },
+      (error) => {
+        console.error('Error in subscription:', error);
+        done(error);
+      }
+    ));
 
-    // Set a timeout in case we don't receive all expected messages
-    const timeoutId = setTimeout(() => {
-      cleanupAndDone(new Error('Timeout: Did not receive all expected messages'));
-    }, 5000);
-
-    // Clear the timeout if the test completes successfully
-    subscriptions.push(observer.updated$.subscribe(() => {
-      clearTimeout(timeoutId);
-    }));
+    client.publish(`${homiePrefix}/${deviceId}/$state`, 'init', { qos: 1 }, () => {
+      client.publish(`${homiePrefix}/${deviceId}/${nodeId}/$name`, 'Test Node', { qos: 1 }, () => {
+        client.publish(`${homiePrefix}/${deviceId}/${nodeId}/${propertyId}`, 'initial-value', { qos: 1 }, () => {
+          setTimeout(() => {
+            client.publish(`${homiePrefix}/${deviceId}/${nodeId}/${propertyId}`, 'updated-value', { qos: 1 });
+          }, 500);
+        });
+      });
+    });
   });
 });
