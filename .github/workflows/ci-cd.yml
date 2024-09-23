@@ -39,11 +39,12 @@ jobs:
       run: npm test
     - name: Wait for MQTT broker
       run: |
-        until nc -z -v -w10 mqtt 1883
-        do
+        docker logs -f mqtt &
+        while ! nc -z -v -w30 mqtt 1883; do
           echo "Waiting for MQTT broker to be available..."
           sleep 1
         done
+        kill %1
     - name: Run integration tests
       run: npm run test:integration
       env:
