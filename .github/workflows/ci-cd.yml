@@ -37,12 +37,17 @@ jobs:
     
     - name: Run unit tests
       run: npm test
-    
+    - name: Wait for MQTT broker
+      run: |
+        until nc -z -v -w10 mqtt 1883
+        do
+          echo "Waiting for MQTT broker to be available..."
+          sleep 1
+        done
     - name: Run integration tests
       run: npm run test:integration
       env:
-        MQTT_HOST: localhost
-        MQTT_PORT: 1883
+        MQTT_BROKER_URL: mqtt://mqtt:1883
     
     - name: Build
       run: npm run build
@@ -54,7 +59,7 @@ jobs:
         if npm dist-tag ls | grep -q "stable"; then
           npm dist-tag rm $npm_package_name stable
         fi
-        
+
         # Publish the package with the "stable" tag
         npm version --no-git-tag-version stable
         npm publish --tag stable

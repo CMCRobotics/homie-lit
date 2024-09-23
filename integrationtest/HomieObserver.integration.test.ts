@@ -1,17 +1,20 @@
 import { HomieObserver, HomieEventType, createMqttHomieObserver } from '../src/HomieObserver';
 import * as mqtt from 'mqtt';
 import { Subscription } from 'rxjs';
+import * as dotenv from 'dotenv';
+dotenv.config();
 
 describe('HomieObserver Integration Tests', () => {
   let observer: HomieObserver;
   let client: mqtt.Client;
+  const brokerUrl = process.env.MQTT_BROKER_URL || 'mqtt://localhost';
   let homiePrefix: string;
   let subscriptions: Subscription[] = [];
 
   beforeEach((done) => {
     homiePrefix = `test-homie-${Math.random().toString(36).substring(7)}`;
-    observer = createMqttHomieObserver('mqtt://localhost', { homiePrefix });
-    client = mqtt.connect('mqtt://localhost');
+    observer = createMqttHomieObserver(brokerUrl, { homiePrefix });
+    client = mqtt.connect(brokerUrl);
     
     client.on('connect', () => {
       done();

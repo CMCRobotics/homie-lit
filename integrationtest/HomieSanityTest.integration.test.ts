@@ -1,8 +1,10 @@
 import * as mqtt from 'mqtt';
+import * as dotenv from 'dotenv';
+dotenv.config();
 
 describe('MQTT Homie Sanity Test', () => {
   let client: mqtt.Client;
-  const brokerUrl = 'mqtt://localhost';
+  const brokerUrl = process.env.MQTT_BROKER_URL || 'mqtt://localhost';
   const homiePrefix = `test-homie-${Math.random().toString(36).substring(7)}`;
   const deviceId = 'test-device';
 
