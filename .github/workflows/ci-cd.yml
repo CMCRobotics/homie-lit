@@ -2,18 +2,26 @@ name: CI/CD
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, develop ]
     tags:
       - 'v*'
   pull_request:
-    branches: [ main ]
+    branches: [ main, develop ]
 
 jobs:
+
   build-test-publish:
     runs-on: ubuntu-latest
     permissions:
       contents: read
       packages: write
+
+    services:
+      mqtt:
+        image: eclipse-mosquitto
+        ports:
+          - 1883:1883
+
     steps:
     - uses: actions/checkout@v2
     
@@ -27,23 +35,38 @@ jobs:
     - name: Install dependencies
       run: npm ci
     
-    - name: Run tests
+    - name: Run unit tests
       run: npm test
+    
+    - name: Run integration tests
+      run: npm run test:integration
+      env:
+        MQTT_HOST: localhost
+        MQTT_PORT: 1883
     
     - name: Build
       run: npm run build
     
     - name: Publish to GitHub Packages
-      run: npm publish
+      if: github.ref == 'refs/heads/main'
+      run: |
+        # Remove the existing "stable" tag if it exists
+        if npm dist-tag ls | grep -q "stable"; then
+          npm dist-tag rm $npm_package_name stable
+        fi
+        
+        # Publish the package with the "stable" tag
+        npm version --no-git-tag-version stable
+        npm publish --tag stable
       env:
         NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
-
   create-release:
     needs: build-test-publish
     if: startsWith(github.ref, 'refs/tags/')
     runs-on: ubuntu-latest
     permissions:
       contents: write
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
