@@ -21,6 +21,6 @@
     "skipLibCheck": true,
     "types": ["aframe", "jest"]
   },
-  "include": ["src/**/*", "test/**/*"],
+  "include": ["src/**/*", "test/**/*", "integrationtest/**/*", "types/**/*"],
   "exclude": ["node_modules", "dist"]
 }
