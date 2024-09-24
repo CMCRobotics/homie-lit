@@ -39,18 +39,11 @@ jobs:
         ports: '1883:1883'
         container-name: 'mqtt'
 
-    - name: Wait for MQTT broker
-      run: |
-        docker ps -a  &
-        while ! nc -z -v -w30 mqtt 1883; do
-          echo "Waiting for MQTT broker to be available..."
-          sleep 1
-        done
-        kill %1
+
     - name: Run integration tests
       run: npm run test:integration
       env:
-        MQTT_BROKER_URL: mqtt://mqtt:1883
+        MQTT_BROKER_URL: mqtt://localhost:1883
     
     - name: Build
       run: npm run build
