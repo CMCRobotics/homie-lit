@@ -4,12 +4,14 @@ import { HomieNode } from './HomieNode';
 import { HomieProperty } from './HomieProperty';
 import { HomieNodeComponent } from './HomieNodeComponent';
 import { PropertyBindingManager } from './PropertyBindingManager';
+import { HomieObserver, createMqttHomieObserver } from './HomieObserver';
 export { HomieDevice } from './HomieDevice';
 export { HomieDeviceElement } from './HomieDeviceElement';
 export { HomieNode } from './HomieNode';
 export { HomieProperty } from './HomieProperty';
 export { HomieNodeComponent } from './HomieNodeComponent';
 export { PropertyBindingManager } from './PropertyBindingManager';
+export { HomieObserver, createMqttHomieObserver } from './HomieObserver';
 declare const HomieLit: {
     HomieDevice: typeof HomieDevice;
     HomieDeviceElement: typeof HomieDeviceElement;
@@ -17,5 +19,7 @@ declare const HomieLit: {
     HomieNodeComponent: typeof HomieNodeComponent;
     HomieProperty: typeof HomieProperty;
     PropertyBindingManager: typeof PropertyBindingManager;
+    HomieObserver: typeof HomieObserver;
+    createMqttHomieObserver: typeof createMqttHomieObserver;
 };
 export default HomieLit;

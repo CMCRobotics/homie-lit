@@ -1,17 +1,5 @@
 /// <reference types="node" />
 import { Observable } from 'rxjs';
-import mqtt from 'mqtt';
-declare module 'mqtt' {
-    interface Client {
-        on(event: 'connect', callback: () => void): this;
-        on(event: 'message', callback: (topic: string, message: Buffer) => void): this;
-        subscribe(topic: string | string[], options?: mqtt.IClientSubscribeOptions, callback?: mqtt.ClientSubscribeCallback): this;
-        end(force?: boolean, options?: object, callback?: () => void): this;
-    }
-    interface IClientOptions {
-    }
-    function connect(brokerUrl: string, options?: IClientOptions): Client;
-}
 interface HomieProperty {
     id: string;
     value: any;
@@ -51,6 +39,7 @@ interface HomiePropertyEvent {
 type HomieEvent = HomieDeviceEvent | HomieNodeEvent | HomiePropertyEvent;
 interface MqttMessageHandler {
     handleMessage(topic: string, message: Buffer): void;
+    subscribe(topic: string): void;
 }
 declare class MqttClient implements MqttMessageHandler {
     private client;
@@ -74,6 +63,7 @@ declare class HomieObserver {
     private onUpdate;
     private onDelete;
     constructor(messageHandler: MqttMessageHandler);
+    subscribe(topic: string): void;
     get created$(): Observable<HomieEvent>;
     get updated$(): Observable<HomieEvent>;
     get deleted$(): Observable<HomieEvent>;
