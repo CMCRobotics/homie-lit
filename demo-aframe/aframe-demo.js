@@ -1,3 +1,5 @@
+const { HomieObserver, HomieEventType, createMqttHomieObserver } = HomieLit;
+
 // Wait for A-Frame to be ready
 AFRAME.registerComponent('homie-light-switch', {
   init: function () {
@@ -35,6 +37,7 @@ AFRAME.registerComponent('homie-light-switch', {
   updateSwitchVisual: function () {
     const switchEl = this.el.querySelector('a-box');
     switchEl.setAttribute('color', `${this.switchState ? '#4CC3D9' : '#4C03D9'}`);
+    switchEl.setAttribute('rotation', `0 ${this.switchState ? '30' : '-30'} 0`);
   }
 });
 
@@ -54,9 +57,6 @@ AFRAME.registerComponent('homie-light-bulb', {
     bulbEl.setAttribute('radius', '0.1');
     bulbEl.setAttribute('color', '#FFF');
     this.el.appendChild(bulbEl);
-
-    // Listen for property changes
-    // this.stateProperty.on('value', (value) => this.updateBulbState(value));
 
     // Initialize bulb state
     this.updateBulbState(false);
@@ -83,4 +83,36 @@ AFRAME.registerComponent('homie-light-bulb', {
     }
   }
 });
+
+// Connect HomieObserver to MQTT broker
+observer = createMqttHomieObserver("ws://localhost:9001");
+
+observer.updated$.subscribe(
+  (event) => {
+    if (event.type == 'property') {
+      if (event.device.id === 'switch' && event.node.id === 'switch' && event.property.id === 'state') {
+        document.getElementById('switch-state').textContent = `Switch State: ${event.property.value}`;
+        const switchComponent = document.querySelector('[homie-light-switch]').components["homie-light-switch"];
+        switchComponent.toggleSwitch();
+        switchComponent.updateSwitchVisual();
+        const bulbComponent = document.querySelector('[homie-light-bulb]').components["homie-light-bulb"];
+        bulbComponent.updateBulbState(event.property.value=='true');
+      } 
+      // else if (event.device.id === 'bulb' && event.node.id === 'bulb' && event.property.id === 'state') {
+      //   document.getElementById('bulb-state').textContent = `Bulb State: ${event.property.value}`;
+      //   // Update the bulb entity in A-Frame
+      //   const bulbComponent = document.querySelector('[homie-light-bulb]').components["homie-light-bulb"];
+      //   bulbComponent.updateBulbState(event.property.value=='true');
+      // }
+    }
+  },
+  (error) => {
+    console.error('Error in subscription:', error);
+    done(error);
+  }
+);
+
+
+observer.subscribe('switch/switch/state');
+// observer.subscribe('bulb/bulb/state');
 

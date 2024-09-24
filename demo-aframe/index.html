@@ -25,6 +25,8 @@
     <div id="info">
         <h1>Homie-Lit A-Frame Demo</h1>
         <p>Click on the light switch to toggle the light bulb.</p>
+        <p id="switch-state">Switch State: Unknown</p>
+        <p id="bulb-state">Bulb State: Unknown</p>
     </div>
     <a-scene>
         <a-camera position="0 1 1" look-controls>
@@ -33,12 +35,12 @@
                 geometry="primitive: ring; radiusInner: 0.015; radiusOuter: 0.02"
                 material="color: black; shader: flat; opacity: 0.7">
             </a-entity>
-
         </a-camera>
 
         <a-entity homie-light-switch position="-1 0.5 -3" rotation="0 30 0"></a-entity>
         <a-entity homie-light-bulb position="1 0.5 -3" rotation="0 -30 0"></a-entity>
 
+        <a-entity light="type: ambient; color: #BBB"></a-entity>
         <a-sky color="#ECECEC"></a-sky>
         <a-plane position="0 0 -4" rotation="-90 0 0" width="4" height="4" color="#7BC8A4"></a-plane>
     </a-scene>
@@ -48,9 +50,9 @@
             const switchDevice = document.querySelector('[homie-light-switch]').components['homie-light-switch'].device;
             const bulbDevice = document.querySelector('[homie-light-bulb]').components['homie-light-bulb'].device;
 
-            // // Connect switch state to bulb state (no on() subscription function available)
+            // // Connect switch state to bulb state
             // switchDevice.getNode('switch').getProperty('state').on('value', (value) => {
-            //   bulbDevice.getNode('bulb').getProperty('state').setValue(value);
+            //     bulbDevice.getNode('bulb').getProperty('state').setValue(value);
             // });
         });
     </script>
