@@ -12,6 +12,9 @@ read -p "Enter new version (current is $current_version): " new_version
 # Update package.json
 npm version $new_version --no-git-tag-version
 
+git add package.json package-lock.json
+git commit -m "Bump version to $new_version"
+
 # Start a new release branch
 git flow release start $new_version
 
