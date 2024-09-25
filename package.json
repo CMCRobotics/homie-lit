@@ -6,7 +6,9 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "start": "webpack serve --mode development --config webpack.lib.dev.config.js",
-    "build": "webpack --mode production --config webpack.lib.config.js",
+    "build": "webpack --mode production --config webpack.lib.config.js && webpack --mode production --config webpack.lib.core.config.js",
+    "build:core": "webpack --mode production --config webpack.lib.core.config.js",
+    "build:esm": "webpack --mode production --config webpack.lib.esm.config.js",
     "build:dev": "webpack --mode development --config webpack.lib.dev.config.js",
     "test": "jest",
     "test:integration": "jest -c jest.integration.config.js",
@@ -27,6 +29,11 @@
       "import": "./dist/homie-lit.esm.js",
       "require": "./dist/homie-lit.js",
       "browser": "./dist/homie-lit.js"
+    },
+    "./core": {
+      "import": "./dist/homie-lit.core.js",
+      "require": "./dist/homie-lit.core.js",
+      "default": "./dist/homie-lit.core.js"
     }
   },
   "author": "Brice Copy",

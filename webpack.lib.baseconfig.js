@@ -7,9 +7,9 @@ module.exports = merge(baseConfig, {
     output: {
         filename: 'homie-lit.js',
         path: path.resolve(__dirname, 'dist'),
-        library: 'HomieLit',
-        libraryTarget: 'umd',
-        globalObject: 'this',
-        clean: true
+        library: {
+            type: 'umd'
+        }
+        ,globalObject: 'this'
       }
   });
