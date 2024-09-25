@@ -126,7 +126,9 @@ class HomieObserver {
   private onUpdate = new Subject<HomieEvent>();
   private onDelete = new Subject<HomieEvent>();
 
-  constructor(private messageHandler: MqttMessageHandler) {}
+  constructor(private messageHandler: MqttMessageHandler) {
+    console.log('HomieObserver constructor called');
+  }
 
   
   public subscribe(topic: string): void {
@@ -146,6 +148,7 @@ class HomieObserver {
   }
 
   public processEvent(event: HomieEvent): void {
+    console.log('HomieObserver processing event:', event);
     switch (event.type) {
       case HomieEventType.Device:
         this.processDeviceEvent(event);
@@ -185,24 +188,30 @@ class HomieObserver {
   }
 
   private processPropertyEvent(event: HomiePropertyEvent): void {
+    console.log('Processing property event:', event);
     const { device, node, property } = event;
     if (!this.devices[device.id]) {
       this.devices[device.id] = device;
       this.onCreate.next({ type: HomieEventType.Device, device });
+      console.log('Emitted create event', event);
     }
     
     if (!this.devices[device.id].nodes[node.id]) {
       this.devices[device.id].nodes[node.id] = node;
       this.onCreate.next({ type: HomieEventType.Node, device, node });
+      console.log('Emitted create event', event);
     }
     
     const existingProperty = this.devices[device.id].nodes[node.id].properties[property.id];
     if (!existingProperty) {
       this.devices[device.id].nodes[node.id].properties[property.id] = property;
       this.onCreate.next(event);
+      this.onUpdate.next(event);  // Emit both create and update for new properties
+      console.log('Emitted create and update events for new property', property.id);
     } else if (existingProperty.value !== property.value) {
       this.devices[device.id].nodes[node.id].properties[property.id] = property;
       this.onUpdate.next(event);
+      console.log('Emitted update event', event);
     }
   }
 
