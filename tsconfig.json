@@ -19,7 +19,7 @@
     "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true,
     "skipLibCheck": true,
-    "types": ["aframe", "jest"]
+    "types": ["aframe", "jest", "node"]
   },
   "include": ["src/**/*", "test/**/*", "integrationtest/**/*", "types/**/*"],
   "exclude": ["node_modules", "dist"]
