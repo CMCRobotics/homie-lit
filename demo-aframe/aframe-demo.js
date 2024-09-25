@@ -31,6 +31,7 @@ AFRAME.registerComponent('homie-light-switch', {
   toggleSwitch: function () {
     this.switchState = !this.switchState;
     this.stateProperty.setValue(this.switchState);
+    const bulbComponent = document.querySelector('#bulb').components["homie-light-bulb"].updateBulbState(this.switchState);
     this.updateSwitchVisual();
   },
 
@@ -92,18 +93,11 @@ observer.updated$.subscribe(
     if (event.type == 'property') {
       if (event.device.id === 'switch' && event.node.id === 'switch' && event.property.id === 'state') {
         document.getElementById('switch-state').textContent = `Switch State: ${event.property.value}`;
-        const switchComponent = document.querySelector('[homie-light-switch]').components["homie-light-switch"];
+        const switchComponent = document.querySelector('#switch').components["homie-light-switch"];
         switchComponent.toggleSwitch();
         switchComponent.updateSwitchVisual();
-        const bulbComponent = document.querySelector('[homie-light-bulb]').components["homie-light-bulb"];
-        bulbComponent.updateBulbState(event.property.value=='true');
+        
       } 
-      // else if (event.device.id === 'bulb' && event.node.id === 'bulb' && event.property.id === 'state') {
-      //   document.getElementById('bulb-state').textContent = `Bulb State: ${event.property.value}`;
-      //   // Update the bulb entity in A-Frame
-      //   const bulbComponent = document.querySelector('[homie-light-bulb]').components["homie-light-bulb"];
-      //   bulbComponent.updateBulbState(event.property.value=='true');
-      // }
     }
   },
   (error) => {
@@ -114,5 +108,3 @@ observer.updated$.subscribe(
 
 
 observer.subscribe('switch/switch/state');
-// observer.subscribe('bulb/bulb/state');
-
