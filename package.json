@@ -5,9 +5,9 @@
   "main": "dist/homie-lit.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "start": "webpack serve --mode development --config webpack.lib.config.js",
+    "start": "webpack serve --mode development --config webpack.lib.dev.config.js",
     "build": "webpack --mode production --config webpack.lib.config.js",
-    "build:dev": "webpack --mode development --config webpack.lib.config.js",
+    "build:dev": "webpack --mode development --config webpack.lib.dev.config.js",
     "test": "jest",
     "test:integration": "jest -c jest.integration.config.js",
     "test:all": "jest && jest -c jest.integration.config.js",
@@ -32,11 +32,11 @@
   "author": "Brice Copy",
   "license": "MIT",
   "devDependencies": {
-    "@types/aframe": "^1.2.7",
     "@types/jest": "^29.5.13",
     "@types/mqtt": "^0.0.34",
     "@types/node": "^16.11.12",
     "jest": "^29.7.0",
+    "dotenv": "^16.4.5",
     "mqtt": "^5.10.1",
     "ts-jest": "^29.2.5",
     "ts-loader": "^9.2.6",
@@ -47,8 +47,6 @@
     "webpack-merge": "^6.0.1"
   },
   "dependencies": {
-    "aframe": "^1.6.0",
-    "dotenv": "^16.4.5",
     "lit": "^2.6.1",
     "rxjs": "^7.8.1"
   },
