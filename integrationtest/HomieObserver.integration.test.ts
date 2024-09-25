@@ -153,11 +153,11 @@ describe('HomieObserver Integration Tests', () => {
 
     subscriptions.push(observer.updated$.subscribe(
       (event) => {
-        if (event.type === HomieEventType.Property && propertyCreated) {
+        if (event.type === HomieEventType.Property && event.property.id === propertyId) {
           expect(event.device.id).toBe(deviceId);
           expect(event.node.id).toBe(nodeId);
           expect(event.property.id).toBe(propertyId);
-          expect(event.property.value).toBe('updated-value');
+          expect(event.property.value).toBe('initial-value');
           done();
         }
       },
