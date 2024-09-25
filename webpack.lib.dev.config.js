@@ -1,15 +1,10 @@
 const path = require('path');
 const { merge } = require('webpack-merge');
-const baseConfig = require('./webpack.config.js');
+const baseConfig = require('./webpack.lib.baseconfig.js');
 
 module.exports = merge(baseConfig, {
-  mode: 'development',
   devServer: {
     static: [
-      {
-        directory: path.join(__dirname, 'demo'),
-        publicPath: '/',
-      },
       {
         directory: path.join(__dirname, 'dist'),
         publicPath: '/',
@@ -18,4 +13,9 @@ module.exports = merge(baseConfig, {
     compress: false,
     port: 9000,
   },
-});
+  output: {
+    library: 'HomieLit',
+    libraryTarget: 'umd',
+  },
+  mode: 'development'
+  });

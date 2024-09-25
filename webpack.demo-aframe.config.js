@@ -7,7 +7,7 @@ module.exports = merge(baseConfig, {
   devServer: {
     static: [
       {
-        directory: path.join(__dirname, 'demo'),
+        directory: path.join(__dirname, 'demo-aframe'),
         publicPath: '/',
       },
       {

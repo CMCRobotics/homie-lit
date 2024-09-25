@@ -1,3 +1,5 @@
+const { HomieObserver, HomieEventType, createMqttHomieObserver } = HomieLit;
+
 // Wait for A-Frame to be ready
 AFRAME.registerComponent('homie-light-switch', {
   init: function () {
@@ -29,12 +31,14 @@ AFRAME.registerComponent('homie-light-switch', {
   toggleSwitch: function () {
     this.switchState = !this.switchState;
     this.stateProperty.setValue(this.switchState);
+    const bulbComponent = document.querySelector('#bulb').components["homie-light-bulb"].updateBulbState(this.switchState);
     this.updateSwitchVisual();
   },
 
   updateSwitchVisual: function () {
     const switchEl = this.el.querySelector('a-box');
     switchEl.setAttribute('color', `${this.switchState ? '#4CC3D9' : '#4C03D9'}`);
+    switchEl.setAttribute('rotation', `0 ${this.switchState ? '30' : '-30'} 0`);
   }
 });
 
@@ -54,9 +58,6 @@ AFRAME.registerComponent('homie-light-bulb', {
     bulbEl.setAttribute('radius', '0.1');
     bulbEl.setAttribute('color', '#FFF');
     this.el.appendChild(bulbEl);
-
-    // Listen for property changes
-    // this.stateProperty.on('value', (value) => this.updateBulbState(value));
 
     // Initialize bulb state
     this.updateBulbState(false);
@@ -84,3 +85,26 @@ AFRAME.registerComponent('homie-light-bulb', {
   }
 });
 
+// Connect HomieObserver to MQTT broker
+observer = createMqttHomieObserver("ws://localhost:9001");
+
+observer.updated$.subscribe(
+  (event) => {
+    if (event.type == 'property') {
+      if (event.device.id === 'switch' && event.node.id === 'switch' && event.property.id === 'state') {
+        document.getElementById('switch-state').textContent = `Switch State: ${event.property.value}`;
+        const switchComponent = document.querySelector('#switch').components["homie-light-switch"];
+        switchComponent.toggleSwitch();
+        switchComponent.updateSwitchVisual();
+        
+      } 
+    }
+  },
+  (error) => {
+    console.error('Error in subscription:', error);
+    done(error);
+  }
+);
+
+
+observer.subscribe('switch/switch/state');

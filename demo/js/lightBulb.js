@@ -95,8 +95,8 @@ class LightSwitchElement extends LitElement {
                     <p>Switch is ${isOn ? 'On' : 'Off'}</p>
                 </div>
             `;
-        }
-        return html`<div>No device set</div>`;
+        } 
+        else return html`<div>No device set</div>`;
     }
 
     _toggleState() {
