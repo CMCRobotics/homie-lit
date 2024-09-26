@@ -50,20 +50,19 @@ jobs:
 
     - name: Get package name
       id: package-name
-      run: echo "::set-output name=name::$(node -p "require('./package.json').name")"
+      run: echo 'PKG_NAME=$(node -p "require(\"./package.json\").name")' >> $GITHUB_OUTPUT
 
-    
     - name: Publish to GitHub Packages
       if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop' || startsWith(github.ref, 'refs/tags/'))
       run: |
         if [[ $GITHUB_REF == refs/heads/main ]]; then
           # Publishing from main branch
-          npm dist-tag rm ${{ steps.package-name.outputs.name }} stable || true
+          npm dist-tag rm $PKG_NAME stable || true
           npm version --no-git-tag-version stable
           npm publish --tag stable
         elif [[ $GITHUB_REF == refs/heads/develop ]]; then
           # Publishing from develop branch
-          npm dist-tag rm ${{ steps.package-name.outputs.name }} latest || true
+          npm dist-tag rm $PKG_NAME latest || true
           npm version --no-git-tag-version latest
           npm publish --tag latest
         elif [[ $GITHUB_REF == refs/tags/* ]]; then
