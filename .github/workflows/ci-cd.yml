@@ -49,18 +49,27 @@ jobs:
       run: npm run build
     
     - name: Publish to GitHub Packages
-      if: startsWith(github.ref, 'refs/tags/')
+      if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop' || startsWith(github.ref, 'refs/tags/'))
       run: |
-        # Remove the existing "stable" tag if it exists
-        if npm dist-tag ls | grep -q "stable"; then
-          npm dist-tag rm $npm_package_name stable
+        if [[ $GITHUB_REF == refs/heads/main ]]; then
+          # Publishing from main branch
+          npm dist-tag rm $npm_package_name stable || true
+          npm version --no-git-tag-version stable
+          npm publish --tag stable
+        elif [[ $GITHUB_REF == refs/heads/develop ]]; then
+          # Publishing from develop branch
+          npm dist-tag rm $npm_package_name latest || true
+          npm version --no-git-tag-version latest
+          npm publish --tag latest
+        elif [[ $GITHUB_REF == refs/tags/* ]]; then
+          # Publishing from a tag
+          VERSION=${GITHUB_REF#refs/tags/v}
+          npm version --no-git-tag-version $VERSION
+          npm publish --tag $VERSION
         fi
-
-        # Publish the package with the "stable" tag
-        npm version --no-git-tag-version stable
-        npm publish --tag stable
       env:
         NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+
   create-release:
     needs: build-test-publish
     if: startsWith(github.ref, 'refs/tags/')
