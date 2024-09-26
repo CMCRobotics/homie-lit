@@ -54,26 +54,26 @@ jobs:
         echo 'PKG_NAME=$(node -p "require(\"./package.json\").name")' >> $GITHUB_OUTPUT
         echo 'PKG_VERSION=$(node -p "require(\"./package.json\").version")' >> $GITHUB_OUTPUT
 
-      - name: Publish to GitHub Packages
-        run: |
-          if [[ $GITHUB_REF == refs/heads/main ]]; then
-            # Publishing from main branch
-            npm publish --tag stable
-          elif [[ $GITHUB_REF == refs/heads/develop ]]; then
-            # Publishing from develop branch
-            npm version --no-git-tag-version prerelease --preid=dev
-            npm publish --tag dev
-          elif [[ $GITHUB_REF == refs/tags/* ]]; then
-            # Publishing from a tag
-            VERSION=${GITHUB_REF#refs/tags/v}
-            if [[ $VERSION =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-              npm publish --tag latest
-            else
-              npm publish --tag $VERSION
-            fi
+    - name: Publish to GitHub Packages
+      run: |
+        if [[ $GITHUB_REF == refs/heads/main ]]; then
+          # Publishing from main branch
+          npm publish --tag stable
+        elif [[ $GITHUB_REF == refs/heads/develop ]]; then
+          # Publishing from develop branch
+          npm version --no-git-tag-version prerelease --preid=dev
+          npm publish --tag dev
+        elif [[ $GITHUB_REF == refs/tags/* ]]; then
+          # Publishing from a tag
+          VERSION=${GITHUB_REF#refs/tags/v}
+          if [[ $VERSION =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            npm publish --tag latest
+          else
+            npm publish --tag $VERSION
           fi
-        env:
-          NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+        fi
+      env:
+        NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
   create-release:
     needs: build-test-publish
