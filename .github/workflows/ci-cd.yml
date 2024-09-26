@@ -48,31 +48,32 @@ jobs:
     - name: Build
       run: npm run build
 
-    - name: Get package name
-      id: package-name
-      run: echo 'PKG_NAME=$(node -p "require(\"./package.json\").name")' >> $GITHUB_OUTPUT
-
-    - name: Publish to GitHub Packages
-      if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop' || startsWith(github.ref, 'refs/tags/'))
+    - name: Get package info
+      id: package-info
       run: |
-        if [[ $GITHUB_REF == refs/heads/main ]]; then
-          # Publishing from main branch
-          npm dist-tag rm $PKG_NAME stable || true
-          npm version --no-git-tag-version stable
-          npm publish --tag stable
-        elif [[ $GITHUB_REF == refs/heads/develop ]]; then
-          # Publishing from develop branch
-          npm dist-tag rm $PKG_NAME latest || true
-          npm version --no-git-tag-version latest
-          npm publish --tag latest
-        elif [[ $GITHUB_REF == refs/tags/* ]]; then
-          # Publishing from a tag
-          VERSION=${GITHUB_REF#refs/tags/v}
-          npm version --no-git-tag-version $VERSION
-          npm publish --tag $VERSION
-        fi
-      env:
-        NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+        echo 'PKG_NAME=$(node -p "require(\"./package.json\").name")' >> $GITHUB_OUTPUT
+        echo 'PKG_VERSION=$(node -p "require(\"./package.json\").version")' >> $GITHUB_OUTPUT
+
+      - name: Publish to GitHub Packages
+        run: |
+          if [[ $GITHUB_REF == refs/heads/main ]]; then
+            # Publishing from main branch
+            npm publish --tag stable
+          elif [[ $GITHUB_REF == refs/heads/develop ]]; then
+            # Publishing from develop branch
+            npm version --no-git-tag-version prerelease --preid=dev
+            npm publish --tag dev
+          elif [[ $GITHUB_REF == refs/tags/* ]]; then
+            # Publishing from a tag
+            VERSION=${GITHUB_REF#refs/tags/v}
+            if [[ $VERSION =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+              npm publish --tag latest
+            else
+              npm publish --tag $VERSION
+            fi
+          fi
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
   create-release:
     needs: build-test-publish
