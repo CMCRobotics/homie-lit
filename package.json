@@ -7,7 +7,8 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "start": "webpack serve --mode development --config webpack.lib.dev.config.js",
-    "build": "webpack --mode production --config webpack.lib.config.js && webpack --mode production --config webpack.lib.core.config.js",
+    "build": "npm run build:lib && npm run build:core && npm run build:esm && npm run build:dev",
+    "build:lib" : "webpack --mode production --config webpack.lib.config.js",
     "build:core": "webpack --mode production --config webpack.lib.core.config.js",
     "build:esm": "webpack --mode production --config webpack.lib.esm.config.js",
     "build:dev": "webpack --mode development --config webpack.lib.dev.config.js",
