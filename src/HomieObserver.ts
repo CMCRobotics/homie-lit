@@ -1,6 +1,6 @@
 import { Subject, Observable } from 'rxjs';
 import mqtt from 'mqtt';
-
+import logger from './logger';
 
 // Interfaces
 interface HomieProperty {
@@ -62,7 +62,7 @@ class MqttClient implements MqttMessageHandler {
     this.client = mqtt.connect(brokerUrl);
     this.homiePrefix = options.homiePrefix || 'homie';
     this.messageCallback = messageCallback;
-    this.client.on('connect', () => console.log('Connected to MQTT broker'));
+    this.client.on('connect', () => logger.info('Connected to MQTT broker'));
     this.client.on('message', (topic, message) => this.handleMessage(topic, message));
   }
 
@@ -188,18 +188,18 @@ class HomieObserver {
   }
 
   private processPropertyEvent(event: HomiePropertyEvent): void {
-    console.log('Processing property event:', event);
+    logger.debug('Processing property event', { event });
     const { device, node, property } = event;
     if (!this.devices[device.id]) {
       this.devices[device.id] = device;
       this.onCreate.next({ type: HomieEventType.Device, device });
-      console.log('Emitted create event', event);
+      logger.debug('Emitted create event for device', { deviceId: device.id });
     }
     
     if (!this.devices[device.id].nodes[node.id]) {
       this.devices[device.id].nodes[node.id] = node;
       this.onCreate.next({ type: HomieEventType.Node, device, node });
-      console.log('Emitted create event', event);
+      logger.debug('Emitted create event for node', { deviceId: device.id, nodeId: node.id });
     }
     
     const existingProperty = this.devices[device.id].nodes[node.id].properties[property.id];
@@ -207,14 +207,13 @@ class HomieObserver {
       this.devices[device.id].nodes[node.id].properties[property.id] = property;
       this.onCreate.next(event);
       this.onUpdate.next(event);  // Emit both create and update for new properties
-      console.log('Emitted create and update events for new property', property.id);
+      logger.debug('Emitted create and update events for new property', { deviceId: device.id, nodeId: node.id, propertyId: property.id });
     } else if (existingProperty.value !== property.value) {
       this.devices[device.id].nodes[node.id].properties[property.id] = property;
       this.onUpdate.next(event);
-      console.log('Emitted update event', event);
+      logger.debug('Emitted create and update events for new property', { deviceId: device.id, nodeId: node.id, propertyId: property.id });
     }
   }
-
 }
 
 // Factory function to create HomieObserver with MQTT client

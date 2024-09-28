@@ -1,7 +1,7 @@
 import { Observable, Subject, of } from 'rxjs';
 import { bufferTime, mergeMap, filter, map, tap, share } from 'rxjs/operators';
 import { HomieObserver, HomieEvent, HomieEventType } from './HomieObserver';
-
+import logger from './logger';
 interface BufferedPropertyUpdate {
   deviceId: string;
   nodeId: string;
@@ -25,8 +25,7 @@ export class HomiePropertyBuffer {
     private homieObserver: HomieObserver, 
     private bufferTimeMs: number = 100
   ) {
-    console.log('HomiePropertyBuffer constructor called');
-    console.log('HomiePropertyBuffer constructor called');
+    logger.info('HomiePropertyBuffer constructor called');
     this.setupPropertyUpdateStream();
     this.bufferedUpdates$ = this.setupBufferedUpdatesStream();
   }
@@ -43,14 +42,14 @@ export class HomiePropertyBuffer {
   }
 
   private setupPropertyUpdateStream() {
-    console.log('Setting up property update stream');
+    logger.info('Setting up property update stream');
     this.homieObserver.updated$
       .pipe(
-        tap((event: HomieEvent) => console.log('Received event in setupPropertyUpdateStream:', event)),
+        tap((event: HomieEvent) => logger.debug('Received event in setupPropertyUpdateStream', { event })),
         filter((event: HomieEvent) => event.type === HomieEventType.Property),
         map((event: HomieEvent) => {
           if (event.type === HomieEventType.Property) {
-            console.log('Processing property event:', event);
+            logger.debug('Processing property event', { event });
             const update: BufferedPropertyUpdate = {
               deviceId: event.device.id,
               nodeId: event.node.id,
@@ -58,30 +57,29 @@ export class HomiePropertyBuffer {
               value: event.property.value,
               priority: this.getPropertyPriority(event.node.id, event.property.id)
             };
-            console.log('Created BufferedPropertyUpdate:', update);
+            logger.debug('Created BufferedPropertyUpdate', { update });
             return update;
           }
           throw new Error('Unexpected event type');
         }),
         tap((update: BufferedPropertyUpdate) => {
-          console.log('Emitting update to propertyUpdates$:', update);
+          logger.debug('Emitting update to propertyUpdates$', { update });
           this.propertyUpdates$.next(update);
         })
       )
       .subscribe({
-        next: () => console.log('Subscription in setupPropertyUpdateStream emitted a value'),
-        error: (err) => console.error('Error in setupPropertyUpdateStream:', err),
-        complete: () => console.log('Subscription in setupPropertyUpdateStream completed')
+        next: () => logger.debug('Subscription in setupPropertyUpdateStream emitted a value'),
+        error: (err) => logger.error('Error in setupPropertyUpdateStream', { error: err }),
+        complete: () => logger.info('Subscription in setupPropertyUpdateStream completed')
       });
   }
 
-
   private setupBufferedUpdatesStream(): Observable<BufferedPropertyUpdate[]> {
-    console.log('Setting up buffered updates stream');
+    logger.info('Setting up buffered updates stream');
     return this.propertyUpdates$.pipe(
-      tap(() => console.log('propertyUpdates$ emitted a value')),
+      tap(() => logger.debug('propertyUpdates$ emitted a value')),
       bufferTime(this.bufferTimeMs),
-      tap((updates: BufferedPropertyUpdate[]) => console.log('Buffered updates:', updates)),
+      tap((updates: BufferedPropertyUpdate[]) => logger.debug('Buffered updates', { updates })),
       filter((updates: BufferedPropertyUpdate[]) => updates.length > 0),
       map((updates: BufferedPropertyUpdate[]) => {
         // Sort updates by priority (highest first) and then by the order of properties in their group
@@ -97,7 +95,7 @@ export class HomiePropertyBuffer {
         }
         return 0;
         });
-        console.log('Sorted updates:', updates);
+        logger.debug('Sorted updates', { updates });
         return updates;
         }),
         share()
@@ -107,19 +105,19 @@ export class HomiePropertyBuffer {
 
 
   public getBufferedUpdates(): Observable<BufferedPropertyUpdate[]> {
-    console.log('Getting buffered updates');
+    logger.info('Getting buffered updates');
     return this.bufferedUpdates$;
   }
 
   public processBufferedUpdates(processor: (updates: BufferedPropertyUpdate[]) => void) {
-    console.log('Setting up buffered updates processor');
+    logger.info('Setting up buffered updates processor');
     this.getBufferedUpdates().subscribe({
       next: (updates) => {
-        console.log('Processing buffered updates:', updates);
+        logger.debug('Processing buffered updates', { updates });
         processor(updates);
       },
-      error: (err) => console.error('Error in processBufferedUpdates:', err),
-      complete: () => console.log('processBufferedUpdates subscription completed')
+      error: (err) => logger.error('Error in processBufferedUpdates', { error: err }),
+      complete: () => logger.info('processBufferedUpdates subscription completed')
     });
   }
 }
