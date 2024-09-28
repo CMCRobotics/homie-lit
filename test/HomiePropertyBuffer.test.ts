@@ -19,6 +19,7 @@ class MockMqttClient implements MqttMessageHandler {
   }
 
   subscribe(topic: string): void {}
+  publish(topic: string, message: string | Buffer): void {}
 }
 
 describe('HomiePropertyBuffer', () => {

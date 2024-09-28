@@ -40,6 +40,7 @@ type HomieEvent = HomieDeviceEvent | HomieNodeEvent | HomiePropertyEvent;
 interface MqttMessageHandler {
     handleMessage(topic: string, message: Buffer): void;
     subscribe(topic: string): void;
+    publish(topic: string, message: string | Buffer): void;
 }
 declare class MqttClient implements MqttMessageHandler {
     private client;
@@ -49,6 +50,7 @@ declare class MqttClient implements MqttMessageHandler {
         homiePrefix?: string | undefined;
     } | undefined, messageCallback: (event: HomieEvent) => void);
     subscribe(pattern: string): void;
+    publish(topic: string, message: string | Buffer): void;
     private getSubscriptionTopic;
     handleMessage(topic: string, message: Buffer): void;
     private handleDeviceState;

@@ -50,6 +50,7 @@ type HomieEvent = HomieDeviceEvent | HomieNodeEvent | HomiePropertyEvent;
 interface MqttMessageHandler {
   handleMessage(topic: string, message: Buffer): void;
   subscribe(topic: string): void;
+  publish(topic: string, message: string | Buffer) : void;
 }
 
 // MQTT Client class
@@ -69,6 +70,10 @@ class MqttClient implements MqttMessageHandler {
   public subscribe(pattern: string): void {
     const subscriptionTopic = this.getSubscriptionTopic(pattern);
     this.client.subscribe(subscriptionTopic);
+  }
+
+  public publish(topic: string, message: string | Buffer) : void {
+    this.client.publish(this.homiePrefix+"/"+topic, message);
   }
 
   private getSubscriptionTopic(pattern: string): string {
