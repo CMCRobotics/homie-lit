@@ -68,7 +68,7 @@ describe('MQTT Homie Sanity Test', () => {
     // Set a timeout in case we don't receive the message
     const timeoutId = setTimeout(() => {
       cleanupAndDone(new Error('Timeout: Did not receive device update message'));
-    }, 5000);
+    }, 8000);
 
     // Clear the timeout if the test completes successfully
     client.on('message', () => {

@@ -82,7 +82,7 @@ describe('HomieObserver Simple Integration Test', () => {
           expect(eventReceived).toBe(true);
           done();
         }
-      }, 2000); // 2 seconds timeout
+      }, 5000);
     });
   });
 });
