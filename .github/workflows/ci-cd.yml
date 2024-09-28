@@ -58,19 +58,17 @@ jobs:
       run: |
         if [[ $GITHUB_REF == refs/heads/main ]]; then
           # Publishing from main branch
+          npm unpublish $PKG_NAME@stable --force || true
           npm publish --tag stable
         elif [[ $GITHUB_REF == refs/heads/develop ]]; then
           # Publishing from develop branch
+          npm unpublish $PKG_NAME@dev --force || true
           npm version --no-git-tag-version prerelease --preid=dev
           npm publish --tag dev
         elif [[ $GITHUB_REF == refs/tags/* ]]; then
           # Publishing from a tag
           VERSION=${GITHUB_REF#refs/tags/v}
-          if [[ $VERSION =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-            npm publish --tag latest
-          else
-            npm publish --tag $VERSION
-          fi
+          npm publish --tag $VERSION
         fi
       env:
         NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
