@@ -1,0 +1,101 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://bcopy.github.io/homie-lit/homie-v4-hierarchy-schema.json",
+  "title": "Homie v4 Hierarchy Schema",
+  "type": "object",
+  "description": "A schema for representing Homie v4 device hierarchies",
+  "definitions": {
+    "property": {
+      "type": "object",
+      "properties": {
+        "datatype": {
+          "type": "string",
+          "enum": ["string", "integer", "float", "boolean", "enum", "color", "datetime", "duration", "json"]
+        },
+        "unit": {
+          "type": "string"
+        },
+        "format": {
+          "type": "string"
+        },
+        "settable": {
+          "type": "boolean"
+        },
+        "retained": {
+          "type": "boolean"
+        },
+        "name": {
+          "type": "string"
+        },
+        "value": {
+          "type": ["string", "number", "boolean", "object", "array"]
+        }
+      },
+      "required": ["datatype", "name"]
+    },
+    "node": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "properties": {
+          "type": "object",
+          "patternProperties": {
+            "^[a-z0-9-]+$": {
+              "$ref": "#/definitions/property"
+            }
+          },
+          "additionalProperties": false
+        },
+        "nodes": {
+          "type": "object",
+          "patternProperties": {
+            "^[a-z0-9-]+$": {
+              "$ref": "#/definitions/node"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "required": ["name", "properties"]
+    },
+    "device": {
+      "type": "object",
+      "properties": {
+        "state": {
+          "type": "string",
+          "enum": ["init", "ready", "disconnected", "sleeping", "lost", "alert"]
+        },
+        "name": {
+          "type": "string"
+        },
+        "nodes": {
+          "type": "object",
+          "patternProperties": {
+            "^[a-z0-9-]+$": {
+              "$ref": "#/definitions/node"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "required": ["state", "name", "nodes"]
+    }
+  },
+  "properties": {
+    "devices": {
+      "type": "object",
+      "patternProperties": {
+        "^[a-z0-9-]+$": {
+          "$ref": "#/definitions/device"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "required": ["devices"]
+}
