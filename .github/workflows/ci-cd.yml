@@ -58,12 +58,21 @@ jobs:
       run: |
         if [[ $GITHUB_REF == refs/heads/main ]]; then
           # Publishing from main branch
-          npm unpublish $PKG_NAME@stable --force || true
+          CURRENT_VERSION=$(npm view $PKG_NAME version --tag stable)
+          if [ ! -z "$CURRENT_VERSION" ]; then
+            npm unpublish $PKG_NAME@$CURRENT_VERSION --force
+          fi
+          NEW_VERSION=$PKG_VERSION-stable.${{ github.run_number }}
+          npm version $NEW_VERSION --no-git-tag-version
           npm publish --tag stable
         elif [[ $GITHUB_REF == refs/heads/develop ]]; then
           # Publishing from develop branch
-          npm unpublish $PKG_NAME@dev --force || true
-          npm version --no-git-tag-version prerelease --preid=dev
+          CURRENT_VERSION=$(npm view $PKG_NAME version --tag dev)
+          if [ ! -z "$CURRENT_VERSION" ]; then
+            npm unpublish $PKG_NAME@$CURRENT_VERSION --force
+          fi
+          NEW_VERSION=$PKG_VERSION-dev.${{ github.run_number }}
+          npm version $NEW_VERSION --no-git-tag-version
           npm publish --tag dev
         elif [[ $GITHUB_REF == refs/tags/* ]]; then
           # Publishing from a tag
