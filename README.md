@@ -57,7 +57,7 @@ Here's a basic example of how to use Homie-Lit to create a light bulb device wit
 
 ## Examples
 
-You can find more examples in the `examples` directory of this repository. These examples demonstrate various use cases and features of Homie-Lit.
+You can find more examples in the `demo*` directories of this repository. These examples demonstrate various use cases and features of Homie-Lit.
 
 ## API Reference
 

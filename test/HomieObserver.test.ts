@@ -36,6 +36,10 @@ class MockMqttClient implements MqttMessageHandler {
   subscribe(topic: string): void {
     // no-op - mock implementation
   }
+
+  publish(topic: string, message: string | Buffer): void {
+    // no-op - mock implementation
+  }
 }
 
 describe('HomieObserver', () => {

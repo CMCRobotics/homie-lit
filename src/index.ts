@@ -5,6 +5,7 @@ import { HomieProperty } from './HomieProperty';
 import { HomieNodeComponent } from './HomieNodeComponent';
 import { PropertyBindingManager} from './PropertyBindingManager';
 import { HomieObserver, createMqttHomieObserver } from './HomieObserver';
+import { HomiePropertyBuffer } from './HomiePropertyBuffer';
 
 
 export { HomieDevice } from './HomieDevice';
@@ -14,6 +15,7 @@ export { HomieProperty } from './HomieProperty';
 export { HomieNodeComponent } from './HomieNodeComponent';
 export { PropertyBindingManager} from './PropertyBindingManager';
 export { HomieObserver, createMqttHomieObserver} from './HomieObserver';
+export { HomiePropertyBuffer } from './HomiePropertyBuffer';
 
 
 // Create a default export
@@ -23,6 +25,7 @@ const HomieLit = {
   HomieNode,
   HomieNodeComponent,
   HomieProperty,
+  HomiePropertyBuffer,
   PropertyBindingManager,
   HomieObserver,
   createMqttHomieObserver
