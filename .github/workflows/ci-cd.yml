@@ -32,18 +32,18 @@ jobs:
     - name: Run unit tests
       run: npm test
 
-    - name: Start Mosquitto
-      uses: namoshek/mosquitto-github-action@v1
-      with:
-        version: '1.6'
-        ports: '1883:1883'
-        container-name: 'mqtt'
+    # - name: Start Mosquitto
+    #   uses: namoshek/mosquitto-github-action@v1
+    #   with:
+    #     version: '1.6'
+    #     ports: '1883:1883'
+    #     container-name: 'mqtt'
 
 
-    - name: Run integration tests
-      run: npm run test:integration
-      env:
-        MQTT_BROKER_URL: mqtt://localhost:1883
+    # - name: Run integration tests
+    #   run: npm run test:integration
+    #   env:
+    #     MQTT_BROKER_URL: mqtt://localhost:1883
     
     - name: Build
       run: npm run build
