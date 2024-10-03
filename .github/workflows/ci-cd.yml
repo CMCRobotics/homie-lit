@@ -85,7 +85,7 @@ jobs:
         elif [[ $GITHUB_REF == refs/tags/* ]]; then
           # Publishing from a tag
           VERSION=${GITHUB_REF#refs/tags/v}
-          npm publish --tag $VERSION
+          npm publish
         fi
       env:
         NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
