@@ -82,7 +82,7 @@ describe('HomieObserver Simple Integration Test', () => {
           expect(eventReceived).toBe(true);
           done();
         }
-      }, 5000);
+      }, 300);
     });
   });
 });

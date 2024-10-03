@@ -1,6 +1,6 @@
 {
   "name": "@bcopy/homie-lit",
-  "version": "0.5.5",
+  "version": "0.5.6",
   "description": "A TypeScript library integrating Homie devices with DOM element attributes for visualization",
   "repository": "github:bcopy/homie-lit",
   "main": "dist/homie-lit.js",

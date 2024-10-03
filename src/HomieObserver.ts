@@ -216,7 +216,7 @@ class HomieObserver {
     } else if (existingProperty.value !== property.value) {
       this.devices[device.id].nodes[node.id].properties[property.id] = property;
       this.onUpdate.next(event);
-      logger.debug('Emitted create and update events for new property', { deviceId: device.id, nodeId: node.id, propertyId: property.id });
+      logger.debug('Emitted update event for property', { deviceId: device.id, nodeId: node.id, propertyId: property.id });
     }
   }
 }
