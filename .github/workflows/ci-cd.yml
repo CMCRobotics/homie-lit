@@ -75,18 +75,6 @@ jobs:
           npm version $NEW_VERSION --no-git-tag-version
           npm publish --tag $TAG
         }
-
-        if [[ $GITHUB_REF == refs/heads/main ]]; then
-          # Publishing from main branch
-          publish_package "stable" "stable"
-        elif [[ $GITHUB_REF == refs/heads/develop ]]; then
-          # Publishing from develop branch
-          publish_package "dev" "dev"
-        elif [[ $GITHUB_REF == refs/tags/* ]]; then
-          # Publishing from a tag
-          VERSION=${GITHUB_REF#refs/tags/v}
-          npm publish
-        fi
       env:
         NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
