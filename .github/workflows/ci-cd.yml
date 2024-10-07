@@ -58,23 +58,25 @@ jobs:
       run: |
         publish_package() {
           local TAG=$1
-          local VERSION_SUFFIX=$2
           
-          # Try to get the current version, if it doesn't exist, this will be empty
-          CURRENT_VERSION=$(npm view $PKG_NAME version --tag $TAG 2>/dev/null || echo "")
-          
-          if [ ! -z "$CURRENT_VERSION" ]; then
-            echo "Unpublishing existing version: $CURRENT_VERSION"
-            npm unpublish $PKG_NAME@$CURRENT_VERSION --force
-          else
-            echo "No existing version found for tag: $TAG"
-          fi
-          
-          NEW_VERSION=$PKG_VERSION-$VERSION_SUFFIX.${{ github.run_number }}
+          NEW_VERSION=$PKG_VERSION.${{ github.run_number }}
           echo "Publishing new version: $NEW_VERSION"
           npm version $NEW_VERSION --no-git-tag-version
-          npm publish --tag $TAG
+          npm publish
+          npm dist-tag add $PKG_NAME@$NEW_VERSION $TAG
         }
+
+        if [[ $GITHUB_REF == refs/heads/main ]]; then
+          # Publishing from main branch
+          publish_package "stable"
+        elif [[ $GITHUB_REF == refs/heads/develop ]]; then
+          # Publishing from develop branch
+          publish_package "dev"
+        elif [[ $GITHUB_REF == refs/tags/* ]]; then
+          # Publishing from a tag
+          VERSION=${GITHUB_REF#refs/tags/v}
+          npm publish
+        fi
       env:
         NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
