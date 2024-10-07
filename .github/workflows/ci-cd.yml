@@ -56,10 +56,10 @@ jobs:
 
     - name: Publish to GitHub Packages
       run: |
-        publish_package() {
+        publish_snapshot_package() {
           local TAG=$1
           
-          NEW_VERSION=${{ steps.package-info.outputs.PKG_VERSION }}.${{ github.run_number }}
+          NEW_VERSION=${{ steps.package-info.outputs.PKG_VERSION }}-$TAG.${{ github.run_number }}
           echo "Publishing new version: $NEW_VERSION"
           npm version $NEW_VERSION --no-git-tag-version
           npm publish
@@ -68,14 +68,15 @@ jobs:
 
         if [[ $GITHUB_REF == refs/heads/main ]]; then
           # Publishing from main branch
-          publish_package "stable"
+          publish_snapshot_package "stable"
         elif [[ $GITHUB_REF == refs/heads/develop ]]; then
           # Publishing from develop branch
-          publish_package "dev"
+          publish_snapshot_package "dev"
         elif [[ $GITHUB_REF == refs/tags/* ]]; then
           # Publishing from a tag
           VERSION=${GITHUB_REF#refs/tags/v}
           npm publish
+          npm dist-tag add ${{ steps.package-info.outputs.PKG_NAME }}@$VERSION "stable"
         fi
       env:
         NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
