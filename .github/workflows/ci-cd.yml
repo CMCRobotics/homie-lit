@@ -59,11 +59,11 @@ jobs:
         publish_package() {
           local TAG=$1
           
-          NEW_VERSION=$PKG_VERSION.${{ github.run_number }}
+          NEW_VERSION=${{ steps.package-info.outputs.PKG_VERSION }}.${{ github.run_number }}
           echo "Publishing new version: $NEW_VERSION"
           npm version $NEW_VERSION --no-git-tag-version
           npm publish
-          npm dist-tag add $PKG_NAME@$NEW_VERSION $TAG
+          npm dist-tag add ${{ steps.package-info.outputs.PKG_NAME }}@$NEW_VERSION $TAG
         }
 
         if [[ $GITHUB_REF == refs/heads/main ]]; then
