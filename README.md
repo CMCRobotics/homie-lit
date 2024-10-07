@@ -22,7 +22,7 @@ npm install homie-lit
 Or include it directly in your HTML file:
 
 ```html
-<script src="https://cdn.jsdelivr.net/gh/bcopy/homie-lit@main/dist/homie-lit.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/cmcrobotics/homie-lit@main/dist/homie-lit.js"></script>
 ```
 
 ## Usage
@@ -36,7 +36,7 @@ Here's a basic example of how to use Homie-Lit to create a light bulb device wit
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Homie-Lit Demo: Light Switch and Light Bulb</title>
-    <script src="https://cdn.jsdelivr.net/gh/bcopy/homie-lit@main/dist/homie-lit.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/cmcrobotics/homie-lit@main/dist/homie-lit.js"></script>
     <script type="module" src="lightBulb.js"></script>
 </head>
 <body>
