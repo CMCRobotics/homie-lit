@@ -66,6 +66,7 @@ declare class HomieObserver {
     private onDelete;
     constructor(messageHandler: MqttMessageHandler);
     subscribe(topic: string): void;
+    publish(topic: string, message: string | Buffer): void;
     get created$(): Observable<HomieEvent>;
     get updated$(): Observable<HomieEvent>;
     get deleted$(): Observable<HomieEvent>;
