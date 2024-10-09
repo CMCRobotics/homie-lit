@@ -1,5 +1,5 @@
 export class HomieProperty {
-  constructor(public name: string, public value: any) {}
+  constructor(public name: string, public value: any, public dataType: any) {}
 
   setValue(newValue: any) {
     this.value = newValue;
