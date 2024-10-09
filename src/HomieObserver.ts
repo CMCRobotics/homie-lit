@@ -140,6 +140,10 @@ class HomieObserver {
     this.messageHandler.subscribe(topic);
   }
 
+  public publish(topic: string, message: string | Buffer) : void {
+    this.messageHandler.publish(topic, message);
+  }
+
   public get created$(): Observable<HomieEvent> {
     return this.onCreate.asObservable();
   }
