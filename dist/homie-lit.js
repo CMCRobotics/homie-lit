@@ -586,7 +586,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   HomieProperty: () => (/* binding */ HomieProperty)\n/* harmony export */ });\nclass HomieProperty {\n    constructor(id, name = id, value, dataType) {\n        this.id = id;\n        this.name = name;\n        this.value = value;\n        this.dataType = dataType;\n    }\n    setValue(newValue) {\n        this.value = newValue;\n    }\n    getValue() {\n        return this.value;\n    }\n}\n\n\n//# sourceURL=webpack://HomieLit/./src/HomieProperty.ts?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   HomieProperty: () => (/* binding */ HomieProperty)\n/* harmony export */ });\nclass HomieProperty {\n    constructor(id, name = id, value, dataType, format = '') {\n        this.id = id;\n        this.name = name;\n        this.value = value;\n        this.dataType = dataType;\n        this.format = format;\n    }\n    setValue(newValue) {\n        this.value = newValue;\n    }\n    getValue() {\n        return this.value;\n    }\n}\n\n\n//# sourceURL=webpack://HomieLit/./src/HomieProperty.ts?");
 
 /***/ }),
 
