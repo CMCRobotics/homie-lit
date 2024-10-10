@@ -531,7 +531,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   HomieDevice: () => (/* binding */ HomieDevice)\n/* harmony export */ });\nclass HomieDevice {\n    constructor(name) {\n        this.name = name;\n        this.nodes = new Map();\n    }\n    addNode(node) {\n        this.nodes.set(node.name, node);\n    }\n    removeNode(node) {\n        this.nodes.delete(node.name);\n    }\n    getNode(name) {\n        return this.nodes.get(name);\n    }\n    getAllNodes() {\n        return Array.from(this.nodes.values());\n    }\n}\n\n\n//# sourceURL=webpack://HomieLit/./src/HomieDevice.ts?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   HomieDevice: () => (/* binding */ HomieDevice)\n/* harmony export */ });\nclass HomieDevice {\n    constructor(id, name = id, type = '') {\n        this.id = id;\n        this.name = name;\n        this.type = type;\n        this.nodes = new Map();\n    }\n    addNode(node) {\n        this.nodes.set(node.id, node);\n    }\n    removeNode(node) {\n        this.nodes.delete(node.id);\n    }\n    getNode(id) {\n        return this.nodes.get(id);\n    }\n    getAllNodes() {\n        return Array.from(this.nodes.values());\n    }\n}\n\n\n//# sourceURL=webpack://HomieLit/./src/HomieDevice.ts?");
 
 /***/ }),
 
@@ -553,7 +553,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   HomieNode: () => (/* binding */ HomieNode)\n/* harmony export */ });\nclass HomieNode {\n    constructor(name) {\n        this.name = name;\n        this.properties = new Map();\n    }\n    addProperty(property) {\n        this.properties.set(property.name, property);\n    }\n    getProperty(name) {\n        return this.properties.get(name);\n    }\n    getAllProperties() {\n        return Array.from(this.properties.values());\n    }\n}\n\n\n//# sourceURL=webpack://HomieLit/./src/HomieNode.ts?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   HomieNode: () => (/* binding */ HomieNode)\n/* harmony export */ });\nclass HomieNode {\n    constructor(id, name = id, type = '') {\n        this.id = id;\n        this.name = name;\n        this.type = type;\n        this.properties = new Map();\n    }\n    addProperty(property) {\n        this.properties.set(property.id, property);\n    }\n    getProperty(id) {\n        return this.properties.get(id);\n    }\n    getAllProperties() {\n        return Array.from(this.properties.values());\n    }\n}\n\n\n//# sourceURL=webpack://HomieLit/./src/HomieNode.ts?");
 
 /***/ }),
 
@@ -586,7 +586,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   HomieProperty: () => (/* binding */ HomieProperty)\n/* harmony export */ });\nclass HomieProperty {\n    constructor(name, value, dataType) {\n        this.name = name;\n        this.value = value;\n        this.dataType = dataType;\n    }\n    setValue(newValue) {\n        this.value = newValue;\n        // TODO: Implement update logic and event emission\n    }\n    getValue() {\n        return this.value;\n    }\n}\n\n\n//# sourceURL=webpack://HomieLit/./src/HomieProperty.ts?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   HomieProperty: () => (/* binding */ HomieProperty)\n/* harmony export */ });\nclass HomieProperty {\n    constructor(id, name = id, value, dataType) {\n        this.id = id;\n        this.name = name;\n        this.value = value;\n        this.dataType = dataType;\n    }\n    setValue(newValue) {\n        this.value = newValue;\n    }\n    getValue() {\n        return this.value;\n    }\n}\n\n\n//# sourceURL=webpack://HomieLit/./src/HomieProperty.ts?");
 
 /***/ }),
 
