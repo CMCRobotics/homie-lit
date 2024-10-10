@@ -3,14 +3,14 @@ import { HomieProperty } from './HomieProperty';
 export class HomieNode {
   private properties: Map<string, HomieProperty> = new Map();
 
-  constructor(public name: string) {}
+  constructor(public id: string, public name: string = id, public type: string = '') { }
 
   addProperty(property: HomieProperty) {
-    this.properties.set(property.name, property);
+    this.properties.set(property.id, property);
   }
 
-  getProperty(name: string): HomieProperty | undefined {
-    return this.properties.get(name);
+  getProperty(id: string): HomieProperty | undefined {
+    return this.properties.get(id);
   }
 
   getAllProperties(): HomieProperty[] {
