@@ -1,9 +1,11 @@
 import { HomieProperty } from './HomieProperty';
 export declare class HomieNode {
+    id: string;
     name: string;
+    type: string;
     private properties;
-    constructor(name: string);
+    constructor(id: string, name?: string, type?: string);
     addProperty(property: HomieProperty): void;
-    getProperty(name: string): HomieProperty | undefined;
+    getProperty(id: string): HomieProperty | undefined;
     getAllProperties(): HomieProperty[];
 }
