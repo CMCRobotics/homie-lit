@@ -14,6 +14,7 @@ module.exports = merge(baseConfig, {
   externals: {
     'lit': 'lit',
     'rxjs': 'rxjs',
-    'mqtt': 'mqtt'
+    'mqtt': 'mqtt',
+    'loglevel': 'loglevel'
   }
 });
