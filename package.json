@@ -1,6 +1,6 @@
 {
   "name": "@cmcrobotics/homie-lit",
-  "version": "0.7.2",
+  "version": "0.7.3",
   "description": "A TypeScript library integrating Homie devices with DOM element attributes for visualization",
   "repository": "github:cmcrobotics/homie-lit",
   "main": "dist/homie-lit.js",
