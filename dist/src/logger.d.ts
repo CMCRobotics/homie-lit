@@ -1,7 +1,3 @@
-declare const logger: {
-    debug: (message: string, ...args: any[]) => void;
-    info: (message: string, ...args: any[]) => void;
-    warn: (message: string, ...args: any[]) => void;
-    error: (message: string, ...args: any[]) => void;
-};
+import log from 'loglevel';
+declare const logger: log.Logger;
 export default logger;

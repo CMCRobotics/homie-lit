@@ -132,7 +132,7 @@ class HomieObserver {
   private onDelete = new Subject<HomieEvent>();
 
   constructor(private messageHandler: MqttMessageHandler) {
-    console.log('HomieObserver constructor called');
+    logger.debug('HomieObserver constructor called');
   }
 
   
@@ -157,7 +157,7 @@ class HomieObserver {
   }
 
   public processEvent(event: HomieEvent): void {
-    console.log('HomieObserver processing event:', event);
+    logger.debug('HomieObserver processing event:', event);
     switch (event.type) {
       case HomieEventType.Device:
         this.processDeviceEvent(event);
