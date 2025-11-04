@@ -1,6 +1,6 @@
 # Homie-Lit
 
-**Homie-Lit** [ˈhoʊmi lɪt] is a TypeScript library that integrates Homie devices with DOM element attributes for easy visualization and interaction. It combines the Homie convention for IoT devices with the Lit library for creating fast, lightweight web components.
+**Homie-Lit** [ˈhoʊmi lɪt] is a TypeScript library that integrates Homie devices with DOM element attributes for easy visualization and interaction. It combines the Homie convention for IoT devices with the Lit library, an MQTT client and RXJS for creating fast, lightweight, reactive web components.
 
 ## Table of Contents
 
