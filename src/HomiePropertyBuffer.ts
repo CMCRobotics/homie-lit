@@ -84,16 +84,16 @@ export class HomiePropertyBuffer {
       map((updates: BufferedPropertyUpdate[]) => {
         // Sort updates by priority (highest first) and then by the order of properties in their group
         const sortedUpdates = updates.sort((a, b) => {
-        if (a.priority !== b.priority) {
-            return b.priority - a.priority;
-        }
-        const groupA = this.propertyGroups.find(g => g.properties.includes(`${a.nodeId}/${a.propertyId}`));
-        const groupB = this.propertyGroups.find(g => g.properties.includes(`${b.nodeId}/${b.propertyId}`));
-        if (groupA && groupB && groupA === groupB) {
-            return groupA.properties.indexOf(`${a.nodeId}/${a.propertyId}`) - 
-                groupB.properties.indexOf(`${b.nodeId}/${b.propertyId}`);
-        }
-        return 0;
+          if (a.priority !== b.priority) {
+              return b.priority - a.priority;
+          }
+          const groupA = this.propertyGroups.find(g => g.properties.includes(`${a.nodeId}/${a.propertyId}`));
+          const groupB = this.propertyGroups.find(g => g.properties.includes(`${b.nodeId}/${b.propertyId}`));
+          if (groupA && groupB && groupA === groupB) {
+              return groupA.properties.indexOf(`${a.nodeId}/${a.propertyId}`) - 
+                  groupB.properties.indexOf(`${b.nodeId}/${b.propertyId}`);
+          }
+          return 0;
         });
         logger.debug('Sorted updates', { updates });
         return updates;
