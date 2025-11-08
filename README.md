@@ -55,6 +55,60 @@ Here's a basic example of how to use Homie-Lit to create a light bulb device wit
 </html>
 ```
 
+## Using `homie-lit` with RxJS and TypeScript
+
+The `homie-lit` library leverages RxJS to manage and observe MQTT property updates in real-time. This section provides a guide on how to use `HomiePropertyBuffer` to effectively handle these updates in your TypeScript projects.
+
+### Setting Up the `HomiePropertyBuffer`
+
+To get started, you need to instantiate `HomieObserver` and `HomiePropertyBuffer`. The `HomieObserver` is responsible for processing incoming MQTT messages, while the `HomiePropertyBuffer` buffers these updates and emits them in a controlled manner.
+
+```typescript
+import { HomieObserver, MqttMessageHandler } from './HomieObserver';
+import { HomiePropertyBuffer } from './HomiePropertyBuffer';
+
+// Mock MQTT client for demonstration purposes
+class MockMqttClient implements MqttMessageHandler {
+  // ... implementation ...
+}
+
+const observer = new HomieObserver(new MockMqttClient());
+const propertyBuffer = new HomiePropertyBuffer(observer, 100); // Buffer interval of 100ms
+```
+
+### Subscribing to Property Updates
+
+You can subscribe to the buffered updates using the `getBufferedUpdates()` method, which returns an RxJS Observable. This allows you to react to property changes as they are emitted.
+
+```typescript
+propertyBuffer.getBufferedUpdates().subscribe(updates => {
+  console.log('Received updates:', updates);
+  // Handle the updates in your application
+});
+```
+
+### Prioritizing and Grouping Properties
+
+`HomiePropertyBuffer` allows you to group properties and assign priorities to them. This is useful when you want to ensure that certain high-priority updates are processed before others.
+
+```typescript
+// Define property groups with different priorities
+propertyBuffer.addPropertyGroup({ 
+  name: 'High Priority', 
+  properties: ['node1/prop1'], 
+  priority: 2 
+});
+propertyBuffer.addPropertyGroup({ 
+  name: 'Low Priority', 
+  properties: ['node1/prop2'], 
+  priority: 1 
+});
+
+// Updates for 'prop1' will be emitted before updates for 'prop2'
+```
+
+This setup ensures that property updates are handled efficiently and in the desired order, making your application more robust and responsive.
+
 ## Examples
 
 You can find more examples in the `demo*` directories of this repository. These examples demonstrate various use cases and features of Homie-Lit.
