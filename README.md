@@ -61,18 +61,18 @@ The `homie-lit` library leverages RxJS to manage and observe MQTT property updat
 
 ### Setting Up the `HomiePropertyBuffer`
 
-To get started, you need to instantiate `HomieObserver` and `HomiePropertyBuffer`. The `HomieObserver` is responsible for processing incoming MQTT messages, while the `HomiePropertyBuffer` buffers these updates and emits them in a controlled manner.
+To get started, you need to create a `HomieObserver` instance using the `createMqttHomieObserver` factory function. This function connects to your MQTT broker and sets up the observer to listen for Homie device messages. Then, you can instantiate a `HomiePropertyBuffer` to buffer and process property updates.
 
 ```typescript
-import { HomieObserver, MqttMessageHandler } from './HomieObserver';
+import { createMqttHomieObserver } from './HomieObserver';
 import { HomiePropertyBuffer } from './HomiePropertyBuffer';
 
-// Mock MQTT client for demonstration purposes
-class MockMqttClient implements MqttMessageHandler {
-  // ... implementation ...
-}
+// Create an observer connected to an MQTT broker
+const observer = createMqttHomieObserver('mqtt://your-broker-address');
 
-const observer = new HomieObserver(new MockMqttClient());
+// Subscribe to all properties of a device
+observer.subscribe('my-device/#');
+
 const propertyBuffer = new HomiePropertyBuffer(observer, 100); // Buffer interval of 100ms
 ```
 
