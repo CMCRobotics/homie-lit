@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://bcopy.github.io/homie-lit/homie-v4-hierarchy-schema.json",
+  "$id": "https://cmcrobotics.github.io/homie-lit/homie-v4-hierarchy-schema.json",
   "title": "Homie v4 Hierarchy Schema",
   "type": "object",
   "description": "A schema for representing Homie v4 device hierarchies",

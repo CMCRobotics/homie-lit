@@ -6,6 +6,7 @@ declare module 'mqtt' {
     subscribe(topic: string | string[], opts?: mqtt.IClientSubscribeOptions, callback?: mqtt.ClientSubscribeCallback): this;
     on(event: 'message', callback: (topic: string, payload: Buffer) => void): this;
     on(event: 'connect', callback: () => void): this;
+    on(event: 'close', callback: () => void): this;
     end(force?: boolean, opts?: object, callback?: () => void): this;
   }
 

@@ -1,4 +1,4 @@
-import { Observable, Subject, of } from 'rxjs';
+import { Observable, Subject, of, merge } from 'rxjs';
 import { bufferTime, mergeMap, filter, map, tap, share } from 'rxjs/operators';
 import { HomieObserver, HomieEvent, HomieEventType } from './HomieObserver';
 import logger from './logger';
@@ -43,7 +43,7 @@ export class HomiePropertyBuffer {
 
   private setupPropertyUpdateStream() {
     logger.info('Setting up property update stream');
-    this.homieObserver.updated$
+    merge(this.homieObserver.created$, this.homieObserver.updated$)
       .pipe(
         tap((event: HomieEvent) => logger.debug('Received event in setupPropertyUpdateStream', { event })),
         filter((event: HomieEvent) => event.type === HomieEventType.Property),
@@ -84,16 +84,16 @@ export class HomiePropertyBuffer {
       map((updates: BufferedPropertyUpdate[]) => {
         // Sort updates by priority (highest first) and then by the order of properties in their group
         const sortedUpdates = updates.sort((a, b) => {
-        if (a.priority !== b.priority) {
-            return b.priority - a.priority;
-        }
-        const groupA = this.propertyGroups.find(g => g.properties.includes(`${a.nodeId}/${a.propertyId}`));
-        const groupB = this.propertyGroups.find(g => g.properties.includes(`${b.nodeId}/${b.propertyId}`));
-        if (groupA && groupB && groupA === groupB) {
-            return groupA.properties.indexOf(`${a.nodeId}/${a.propertyId}`) - 
-                groupB.properties.indexOf(`${b.nodeId}/${b.propertyId}`);
-        }
-        return 0;
+          if (a.priority !== b.priority) {
+              return b.priority - a.priority;
+          }
+          const groupA = this.propertyGroups.find(g => g.properties.includes(`${a.nodeId}/${a.propertyId}`));
+          const groupB = this.propertyGroups.find(g => g.properties.includes(`${b.nodeId}/${b.propertyId}`));
+          if (groupA && groupB && groupA === groupB) {
+              return groupA.properties.indexOf(`${a.nodeId}/${a.propertyId}`) - 
+                  groupB.properties.indexOf(`${b.nodeId}/${b.propertyId}`);
+          }
+          return 0;
         });
         logger.debug('Sorted updates', { updates });
         return updates;
