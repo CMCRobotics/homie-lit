@@ -58,12 +58,23 @@ class MqttClient implements MqttMessageHandler {
   private client: mqtt.Client;
   private homiePrefix: string;
   private messageCallback: (event: HomieEvent) => void;
+  private onConnectCallback: () => void;
+  private onDisconnectCallback: () => void;
 
-  constructor(brokerUrl: string, options: { homiePrefix?: string } = {}, messageCallback: (event: HomieEvent) => void) {
+  constructor(brokerUrl: string, options: { homiePrefix?: string } = {}, messageCallback: (event: HomieEvent) => void, onConnectCallback: () => void, onDisconnectCallback: () => void) {
     this.client = mqtt.connect(brokerUrl);
     this.homiePrefix = options.homiePrefix || 'homie';
     this.messageCallback = messageCallback;
-    this.client.on('connect', () => logger.info('Connected to MQTT broker'));
+    this.onConnectCallback = onConnectCallback;
+    this.onDisconnectCallback = onDisconnectCallback;
+    this.client.on('connect', () => {
+      logger.info('Connected to MQTT broker');
+      this.onConnectCallback();
+    });
+    this.client.on('close', () => {
+      logger.info('Disconnected from MQTT broker');
+      this.onDisconnectCallback();
+    });
     this.client.on('message', (topic, message) => this.handleMessage(topic, message));
   }
 
@@ -130,6 +141,8 @@ class HomieObserver {
   private onCreate = new Subject<HomieEvent>();
   private onUpdate = new Subject<HomieEvent>();
   private onDelete = new Subject<HomieEvent>();
+  private onConnect = new Subject<void>();
+  private onDisconnect = new Subject<void>();
 
   constructor(private messageHandler: MqttMessageHandler) {
     logger.debug('HomieObserver constructor called');
@@ -154,6 +167,21 @@ class HomieObserver {
 
   public get deleted$(): Observable<HomieEvent> {
     return this.onDelete.asObservable();
+  }
+
+  public get connected$(): Observable<void> {
+    return this.onConnect.asObservable();
+  }
+
+  public get disconnected$(): Observable<void> {
+    return this.onDisconnect.asObservable();
+  }
+
+  public onConnectEvent(): void {
+    this.onConnect.next();
+  }
+  public onDisconnectEvent(): void {
+    this.onDisconnect.next();
   }
 
   public processEvent(event: HomieEvent): void {
@@ -215,8 +243,7 @@ class HomieObserver {
     if (!existingProperty) {
       this.devices[device.id].nodes[node.id].properties[property.id] = property;
       this.onCreate.next(event);
-      this.onUpdate.next(event);  // Emit both create and update for new properties
-      logger.debug('Emitted create and update events for new property', { deviceId: device.id, nodeId: node.id, propertyId: property.id });
+      logger.debug('Emitted create event for new property', { deviceId: device.id, nodeId: node.id, propertyId: property.id });
     } else if (existingProperty.value !== property.value) {
       this.devices[device.id].nodes[node.id].properties[property.id] = property;
       this.onUpdate.next(event);
@@ -228,11 +255,23 @@ class HomieObserver {
 // Factory function to create HomieObserver with MQTT client
 function createMqttHomieObserver(brokerUrl: string, options: { homiePrefix?: string } = {}): HomieObserver {
   let observer: HomieObserver;
-  const mqttClient = new MqttClient(brokerUrl, options, (event: HomieEvent) => {
-    if (observer) {
-      observer.processEvent(event);
+  const mqttClient = new MqttClient(brokerUrl, options, 
+    (event: HomieEvent) => {
+      if (observer) {
+        observer.processEvent(event);
+      }
+    },
+    () => {
+      if (observer) {
+        observer.onConnectEvent();
+      }
+    },
+    () => {
+      if (observer) {
+        observer.onDisconnectEvent();
+      }
     }
-  });
+  );
   observer = new HomieObserver(mqttClient);
   return observer;
 }

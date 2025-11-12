@@ -1,4 +1,4 @@
-import { Observable, Subject, of } from 'rxjs';
+import { Observable, Subject, of, merge } from 'rxjs';
 import { bufferTime, mergeMap, filter, map, tap, share } from 'rxjs/operators';
 import { HomieObserver, HomieEvent, HomieEventType } from './HomieObserver';
 import logger from './logger';
@@ -43,7 +43,7 @@ export class HomiePropertyBuffer {
 
   private setupPropertyUpdateStream() {
     logger.info('Setting up property update stream');
-    this.homieObserver.updated$
+    merge(this.homieObserver.created$, this.homieObserver.updated$)
       .pipe(
         tap((event: HomieEvent) => logger.debug('Received event in setupPropertyUpdateStream', { event })),
         filter((event: HomieEvent) => event.type === HomieEventType.Property),

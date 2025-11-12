@@ -109,6 +109,22 @@ propertyBuffer.addPropertyGroup({
 
 This setup ensures that property updates are handled efficiently and in the desired order, making your application more robust and responsive.
 
+### Observing Connection Events
+
+You can also observe the connection and disconnection events from the MQTT broker. This is useful for handling connection state changes in your application.
+
+```typescript
+// Subscribe to connection events
+observer.connected$.subscribe(() => {
+  console.log('Connected to MQTT broker');
+});
+
+// Subscribe to disconnection events
+observer.disconnected$.subscribe(() => {
+  console.log('Disconnected from MQTT broker');
+});
+```
+
 ## Examples
 
 You can find more examples in the `demo*` directories of this repository. These examples demonstrate various use cases and features of Homie-Lit.
