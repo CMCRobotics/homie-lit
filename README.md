@@ -125,6 +125,19 @@ observer.disconnected$.subscribe(() => {
 });
 ```
 
+### Logging
+
+The library uses `loglevel` for logging. You can set the log level to see more detailed output, which is useful for debugging.
+
+```typescript
+import { setLogLevel } from 'homie-lit';
+
+// Set the log level to 'debug'
+setLogLevel('debug');
+```
+
+You can set the log level to any of the following values: `trace`, `debug`, `info`, `warn`, `error`.
+
 ## Examples
 
 You can find more examples in the `demo*` directories of this repository. These examples demonstrate various use cases and features of Homie-Lit.

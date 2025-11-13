@@ -8,4 +8,8 @@ log.setLevel(log.levels.INFO);
 const logger = log.getLogger('homie-lit');
 logger.setLevel('info');
 
+export const setLogLevel = (level: log.LogLevelDesc) => {
+  logger.setLevel(level);
+};
+
 export default logger;
