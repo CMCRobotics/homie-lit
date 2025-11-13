@@ -80,11 +80,14 @@ class MqttClient implements MqttMessageHandler {
 
   public subscribe(pattern: string): void {
     const subscriptionTopic = this.getSubscriptionTopic(pattern);
+    logger.debug(`Subscribing to topic: ${subscriptionTopic}`);
     this.client.subscribe(subscriptionTopic);
   }
 
   public publish(topic: string, message: string | Buffer) : void {
-    this.client.publish(this.homiePrefix+"/"+topic, message);
+    const fullTopic = `${this.homiePrefix}/${topic}`;
+    logger.debug(`Publishing to topic: ${fullTopic}`);
+    this.client.publish(fullTopic, message);
   }
 
   private getSubscriptionTopic(pattern: string): string {
@@ -92,6 +95,7 @@ class MqttClient implements MqttMessageHandler {
   }
 
   public handleMessage(topic: string, message: Buffer): void {
+    logger.debug(`Received message on topic: ${topic}`);
     const topicParts = topic.split('/');
     if (topicParts[0] !== this.homiePrefix || topicParts.length < 3) return;
 
