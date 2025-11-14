@@ -1,5 +1,5 @@
 import { Subject, Observable } from 'rxjs';
-import mqtt from 'mqtt';
+import mqtt, { IClientPublishOptions } from 'mqtt';
 import logger from './logger';
 
 // Interfaces
@@ -50,7 +50,7 @@ type HomieEvent = HomieDeviceEvent | HomieNodeEvent | HomiePropertyEvent;
 interface MqttMessageHandler {
   handleMessage(topic: string, message: Buffer): void;
   subscribe(topic: string): void;
-  publish(topic: string, message: string | Buffer) : void;
+  publish(topic: string, message: string | Buffer, options?: IClientPublishOptions) : void;
 }
 
 // MQTT Client class
@@ -84,10 +84,10 @@ class MqttClient implements MqttMessageHandler {
     this.client.subscribe(subscriptionTopic);
   }
 
-  public publish(topic: string, message: string | Buffer) : void {
+  public publish(topic: string, message: string | Buffer, options: IClientPublishOptions = {}) : void {
     const fullTopic = `${this.homiePrefix}/${topic}`;
     logger.debug(`Publishing to topic: ${fullTopic}`);
-    this.client.publish(fullTopic, message);
+    this.client.publish(fullTopic, message, options);
   }
 
   private getSubscriptionTopic(pattern: string): string {
@@ -157,8 +157,8 @@ class HomieObserver {
     this.messageHandler.subscribe(topic);
   }
 
-  public publish(topic: string, message: string | Buffer) : void {
-    this.messageHandler.publish(topic, message);
+  public publish(topic: string, message: string | Buffer, options: IClientPublishOptions = {}) : void {
+    this.messageHandler.publish(topic, message, options);
   }
 
   public get created$(): Observable<HomieEvent> {

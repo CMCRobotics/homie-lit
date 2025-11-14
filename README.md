@@ -138,6 +138,39 @@ setLogLevel('debug');
 
 You can set the log level to any of the following values: `trace`, `debug`, `info`, `warn`, `error`.
 
+### Publishing Messages with Options
+
+As of version 0.7.6, the `publish` method on the `HomieObserver` instance supports an optional `options` object that can be used to specify flags like `retain`, `qos`, and `dup`.
+
+#### Retained Messages
+
+To send a retained message, set the `retain` flag to `true` in the options object.
+
+```typescript
+// Publish a message with the retain flag set to true
+observer.publish('my-device/my-node/my-property/set', 'true', { retain: true });
+```
+
+#### Quality of Service (QoS)
+
+You can specify the Quality of Service level for a message by setting the `qos` flag.
+
+```typescript
+// Publish a message with QoS level 2
+observer.publish('my-device/my-node/my-property/set', 'true', { qos: 2 });
+```
+
+The `qos` level can be 0, 1, or 2.
+
+#### Duplicate (DUP) Flag
+
+You can mark a message as a duplicate by setting the `dup` flag to `true`.
+
+```typescript
+// Publish a message with the DUP flag set to true
+observer.publish('my-device/my-node/my-property/set', 'true', { dup: true });
+```
+
 ## Examples
 
 You can find more examples in the `demo*` directories of this repository. These examples demonstrate various use cases and features of Homie-Lit.
