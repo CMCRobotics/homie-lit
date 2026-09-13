@@ -6,8 +6,10 @@ export class PropertyBindingManager {
   private bindings: Map<string, Array<{ element: HTMLElement; attribute: string; transformer?: Transformer }>> = new Map();
   private transformers: Map<string, Transformer> = new Map();
 
-  constructor(private observer: HomieObserver) {
-    this.setupSubscription();
+  constructor(private observer?: HomieObserver) {
+    if (this.observer) {
+      this.setupSubscription();
+    }
     this.registerDefaultTransformers();
   }
 
@@ -30,12 +32,14 @@ export class PropertyBindingManager {
   }
 
   private setupSubscription() {
-    this.observer.updated$.subscribe((event) => {
-      if (event.type === 'property') {
-        const path = `${event.device.id}/${event.node.id}/${event.property.id}`;
-        this.updateBindingsForPath(path, event.property.value);
-      }
-    });
+    if (this.observer) {
+      this.observer.updated$.subscribe((event) => {
+        if (event.type === 'property') {
+          const path = `${event.device.id}/${event.node.id}/${event.property.id}`;
+          this.updateBindingsForPath(path, event.property.value);
+        }
+      });
+    }
   }
 
   bindPath(path: string, element: HTMLElement, attribute: string, transformer?: Transformer | string) {

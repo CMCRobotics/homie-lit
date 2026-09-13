@@ -157,7 +157,7 @@ describe('HomieObserver Integration Tests', () => {
           expect(event.device.id).toBe(deviceId);
           expect(event.node.id).toBe(nodeId);
           expect(event.property.id).toBe(propertyId);
-          expect(event.property.value).toBe('initial-value');
+          expect(event.property.value).toBe('updated-value');
           done();
         }
       },

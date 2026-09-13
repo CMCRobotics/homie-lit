@@ -1,5 +1,6 @@
 /// <reference types="node" />
 import { Observable } from 'rxjs';
+import { IClientPublishOptions } from 'mqtt';
 interface HomieProperty {
     id: string;
     value: any;
@@ -40,17 +41,19 @@ type HomieEvent = HomieDeviceEvent | HomieNodeEvent | HomiePropertyEvent;
 interface MqttMessageHandler {
     handleMessage(topic: string, message: Buffer): void;
     subscribe(topic: string): void;
-    publish(topic: string, message: string | Buffer): void;
+    publish(topic: string, message: string | Buffer, options?: IClientPublishOptions): void;
 }
 declare class MqttClient implements MqttMessageHandler {
     private client;
     private homiePrefix;
     private messageCallback;
+    private onConnectCallback;
+    private onDisconnectCallback;
     constructor(brokerUrl: string, options: {
         homiePrefix?: string | undefined;
-    } | undefined, messageCallback: (event: HomieEvent) => void);
+    } | undefined, messageCallback: (event: HomieEvent) => void, onConnectCallback: () => void, onDisconnectCallback: () => void);
     subscribe(pattern: string): void;
-    publish(topic: string, message: string | Buffer): void;
+    publish(topic: string, message: string | Buffer, options?: IClientPublishOptions): void;
     private getSubscriptionTopic;
     handleMessage(topic: string, message: Buffer): void;
     private handleDeviceState;
@@ -64,12 +67,18 @@ declare class HomieObserver {
     private onCreate;
     private onUpdate;
     private onDelete;
+    private onConnect;
+    private onDisconnect;
     constructor(messageHandler: MqttMessageHandler);
     subscribe(topic: string): void;
-    publish(topic: string, message: string | Buffer): void;
+    publish(topic: string, message: string | Buffer, options?: IClientPublishOptions): void;
     get created$(): Observable<HomieEvent>;
     get updated$(): Observable<HomieEvent>;
     get deleted$(): Observable<HomieEvent>;
+    get connected$(): Observable<void>;
+    get disconnected$(): Observable<void>;
+    onConnectEvent(): void;
+    onDisconnectEvent(): void;
     processEvent(event: HomieEvent): void;
     private processDeviceEvent;
     private processNodeEvent;

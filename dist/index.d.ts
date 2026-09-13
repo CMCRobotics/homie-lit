@@ -6,7 +6,7 @@ import { HomieNodeComponent } from './HomieNodeComponent';
 import { PropertyBindingManager } from './PropertyBindingManager';
 import { HomieObserver, createMqttHomieObserver } from './HomieObserver';
 import { HomiePropertyBuffer } from './HomiePropertyBuffer';
-import logger from './logger';
+import logger, { setLogLevel } from './logger';
 export { HomieDevice } from './HomieDevice';
 export { HomieDeviceElement } from './HomieDeviceElement';
 export { HomieNode } from './HomieNode';
@@ -15,7 +15,7 @@ export { HomieNodeComponent } from './HomieNodeComponent';
 export { PropertyBindingManager } from './PropertyBindingManager';
 export { HomieObserver, createMqttHomieObserver } from './HomieObserver';
 export { HomiePropertyBuffer } from './HomiePropertyBuffer';
-export { logger };
+export { logger, setLogLevel };
 declare const HomieLit: {
     HomieDevice: typeof HomieDevice;
     HomieDeviceElement: typeof HomieDeviceElement;
@@ -27,5 +27,6 @@ declare const HomieLit: {
     HomieObserver: typeof HomieObserver;
     createMqttHomieObserver: typeof createMqttHomieObserver;
     logger: import("loglevel").Logger;
+    setLogLevel: (level: import("loglevel").LogLevelDesc) => void;
 };
 export default HomieLit;

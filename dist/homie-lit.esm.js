@@ -1,24 +1,802 @@
-import*as e from"lit";import*as t from"rxjs";import*as r from"mqtt";var n={65:function(e,t,r){var n,o;n=function(){var e=function(){},t="undefined",r=typeof window!==t&&typeof window.navigator!==t&&/Trident\/|MSIE /.test(window.navigator.userAgent),n=["trace","debug","info","warn","error"],o={},i=null;function s(e,t){var r=e[t];if("function"==typeof r.bind)return r.bind(e);try{return Function.prototype.bind.call(r,e)}catch(t){return function(){return Function.prototype.apply.apply(r,[e,arguments])}}}function c(){console.log&&(console.log.apply?console.log.apply(console,arguments):Function.prototype.apply.apply(console.log,[console,arguments])),console.trace&&console.trace()}function u(){for(var r=this.getLevel(),o=0;o<n.length;o++){var i=n[o];this[i]=o<r?e:this.methodFactory(i,r,this.name)}if(this.log=this.debug,typeof console===t&&r<this.levels.SILENT)return"No console available for logging"}function a(e){return function(){typeof console!==t&&(u.call(this),this[e].apply(this,arguments))}}function l(n,o,i){return function(n){return"debug"===n&&(n="log"),typeof console!==t&&("trace"===n&&r?c:void 0!==console[n]?s(console,n):void 0!==console.log?s(console,"log"):e)}(n)||a.apply(this,arguments)}function d(e,r){var s,c,a,d=this,p="loglevel";function f(){var e;if(typeof window!==t&&p){try{e=window.localStorage[p]}catch(e){}if(typeof e===t)try{var r=window.document.cookie,n=encodeURIComponent(p),o=r.indexOf(n+"=");-1!==o&&(e=/^([^;]+)/.exec(r.slice(o+n.length+1))[1])}catch(e){}return void 0===d.levels[e]&&(e=void 0),e}}function h(e){var t=e;if("string"==typeof t&&void 0!==d.levels[t.toUpperCase()]&&(t=d.levels[t.toUpperCase()]),"number"==typeof t&&t>=0&&t<=d.levels.SILENT)return t;throw new TypeError("log.setLevel() called with invalid level: "+e)}"string"==typeof e?p+=":"+e:"symbol"==typeof e&&(p=void 0),d.name=e,d.levels={TRACE:0,DEBUG:1,INFO:2,WARN:3,ERROR:4,SILENT:5},d.methodFactory=r||l,d.getLevel=function(){return null!=a?a:null!=c?c:s},d.setLevel=function(e,r){return a=h(e),!1!==r&&function(e){var r=(n[e]||"silent").toUpperCase();if(typeof window!==t&&p){try{return void(window.localStorage[p]=r)}catch(e){}try{window.document.cookie=encodeURIComponent(p)+"="+r+";"}catch(e){}}}(a),u.call(d)},d.setDefaultLevel=function(e){c=h(e),f()||d.setLevel(e,!1)},d.resetLevel=function(){a=null,function(){if(typeof window!==t&&p){try{window.localStorage.removeItem(p)}catch(e){}try{window.document.cookie=encodeURIComponent(p)+"=; expires=Thu, 01 Jan 1970 00:00:00 UTC"}catch(e){}}}(),u.call(d)},d.enableAll=function(e){d.setLevel(d.levels.TRACE,e)},d.disableAll=function(e){d.setLevel(d.levels.SILENT,e)},d.rebuild=function(){if(i!==d&&(s=h(i.getLevel())),u.call(d),i===d)for(var e in o)o[e].rebuild()},s=h(i?i.getLevel():"WARN");var v=f();null!=v&&(a=h(v)),u.call(d)}(i=new d).getLogger=function(e){if("symbol"!=typeof e&&"string"!=typeof e||""===e)throw new TypeError("You must supply a name when creating a logger.");var t=o[e];return t||(t=o[e]=new d(e,i.methodFactory)),t};var p=typeof window!==t?window.log:void 0;return i.noConflict=function(){return typeof window!==t&&window.log===i&&(window.log=p),i},i.getLoggers=function(){return o},i.default=i,i},void 0===(o=n.call(t,r,t,e))||(e.exports=o)}},o={};function i(e){var t=o[e];if(void 0!==t)return t.exports;var r=o[e]={exports:{}};return n[e].call(r.exports,r,r.exports,i),r.exports}i.n=e=>{var t=e&&e.__esModule?()=>e.default:()=>e;return i.d(t,{a:t}),t},i.d=(e,t)=>{for(var r in t)i.o(t,r)&&!i.o(e,r)&&Object.defineProperty(e,r,{enumerable:!0,get:t[r]})},i.o=(e,t)=>Object.prototype.hasOwnProperty.call(e,t);var s={};i.d(s,{NB:()=>c,zX:()=>y,rX:()=>g,O:()=>h,Rx:()=>U,oN:()=>w,CN:()=>Le,eE:()=>f,Zk:()=>A,Ay:()=>He,vF:()=>I});class c{constructor(e,t=e,r=""){this.id=e,this.name=t,this.type=r,this.nodes=new Map}addNode(e){this.nodes.set(e.id,e)}removeNode(e){this.nodes.delete(e.id)}getNode(e){return this.nodes.get(e)}getAllNodes(){return Array.from(this.nodes.values())}}const u=(l={LitElement:()=>e.LitElement,css:()=>e.css,html:()=>e.html,render:()=>e.render},d={},i.d(d,l),d),a=(e,t)=>"method"===t.kind&&t.descriptor&&!("value"in t.descriptor)?{...t,finisher(r){r.createProperty(t.key,e)}}:{kind:"field",key:Symbol(),placement:"own",descriptor:{},originalKey:t.key,initializer(){"function"==typeof t.initializer&&(this[t.key]=t.initializer.call(this))},finisher(r){r.createProperty(t.key,e)}};var l,d,p;null===(p=window.HTMLSlotElement)||void 0===p||p.prototype.assignedElements;class f{constructor(){this.bindings=new Map}bindProperty(e,t,r){const n=`${e.name}-${r}`;this.bindings.set(n,t),this.updateElement(e,t,r)}updateElement(e,t,r){t.setAttribute(r,e.getValue().toString())}}class h extends HTMLElement{constructor(e){super(),this.node=e,this.bindingManager=new f}connectedCallback(){this.render()}render(){const e=u.html`
+var __create = Object.create;
+var __getProtoOf = Object.getPrototypeOf;
+var __defProp = Object.defineProperty;
+var __getOwnPropNames = Object.getOwnPropertyNames;
+var __hasOwnProp = Object.prototype.hasOwnProperty;
+function __accessProp(key) {
+  return this[key];
+}
+var __toESMCache_node;
+var __toESMCache_esm;
+var __toESM = (mod, isNodeMode, target) => {
+  var canCache = mod != null && typeof mod === "object";
+  if (canCache) {
+    var cache = isNodeMode ? __toESMCache_node ??= new WeakMap : __toESMCache_esm ??= new WeakMap;
+    var cached = cache.get(mod);
+    if (cached)
+      return cached;
+  }
+  target = mod != null ? __create(__getProtoOf(mod)) : {};
+  const to = isNodeMode || !mod || !mod.__esModule || !__hasOwnProp.call(mod, "default") ? __defProp(target, "default", { value: mod, enumerable: true }) : target;
+  if (mod && typeof mod === "object" || typeof mod === "function") {
+    for (let key of __getOwnPropNames(mod))
+      if (!__hasOwnProp.call(to, key))
+        __defProp(to, key, {
+          get: __accessProp.bind(mod, key),
+          enumerable: true
+        });
+  }
+  if (canCache)
+    cache.set(mod, to);
+  return to;
+};
+var __commonJS = (cb, mod) => () => (mod || cb((mod = { exports: {} }).exports, mod), mod.exports);
+var __legacyDecorateClassTS = function(decorators, target, key, desc) {
+  var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+  if (typeof Reflect === "object" && typeof Reflect.decorate === "function")
+    r = Reflect.decorate(decorators, target, key, desc);
+  else
+    for (var i = decorators.length - 1;i >= 0; i--)
+      if (d = decorators[i])
+        r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+  return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __legacyMetadataTS = (k, v) => {
+  if (typeof Reflect === "object" && typeof Reflect.metadata === "function")
+    return Reflect.metadata(k, v);
+};
+
+// node_modules/loglevel/lib/loglevel.js
+var require_loglevel = __commonJS(function(exports, module) {
+  (function(root, definition) {
+    if (typeof define === "function" && define.amd) {
+      define(definition);
+    } else if (typeof module === "object" && module.exports) {
+      module.exports = definition();
+    } else {
+      root.log = definition();
+    }
+  })(exports, function() {
+    var noop = function() {};
+    var undefinedType = "undefined";
+    var isIE = typeof window !== undefinedType && typeof window.navigator !== undefinedType && /Trident\/|MSIE /.test(window.navigator.userAgent);
+    var logMethods = [
+      "trace",
+      "debug",
+      "info",
+      "warn",
+      "error"
+    ];
+    var _loggersByName = {};
+    var defaultLogger = null;
+    function bindMethod(obj, methodName) {
+      var method = obj[methodName];
+      if (typeof method.bind === "function") {
+        return method.bind(obj);
+      } else {
+        try {
+          return Function.prototype.bind.call(method, obj);
+        } catch (e) {
+          return function() {
+            return Function.prototype.apply.apply(method, [obj, arguments]);
+          };
+        }
+      }
+    }
+    function traceForIE() {
+      if (console.log) {
+        if (console.log.apply) {
+          console.log.apply(console, arguments);
+        } else {
+          Function.prototype.apply.apply(console.log, [console, arguments]);
+        }
+      }
+      if (console.trace)
+        console.trace();
+    }
+    function realMethod(methodName) {
+      if (methodName === "debug") {
+        methodName = "log";
+      }
+      if (typeof console === undefinedType) {
+        return false;
+      } else if (methodName === "trace" && isIE) {
+        return traceForIE;
+      } else if (console[methodName] !== undefined) {
+        return bindMethod(console, methodName);
+      } else if (console.log !== undefined) {
+        return bindMethod(console, "log");
+      } else {
+        return noop;
+      }
+    }
+    function replaceLoggingMethods() {
+      var level = this.getLevel();
+      for (var i = 0;i < logMethods.length; i++) {
+        var methodName = logMethods[i];
+        this[methodName] = i < level ? noop : this.methodFactory(methodName, level, this.name);
+      }
+      this.log = this.debug;
+      if (typeof console === undefinedType && level < this.levels.SILENT) {
+        return "No console available for logging";
+      }
+    }
+    function enableLoggingWhenConsoleArrives(methodName) {
+      return function() {
+        if (typeof console !== undefinedType) {
+          replaceLoggingMethods.call(this);
+          this[methodName].apply(this, arguments);
+        }
+      };
+    }
+    function defaultMethodFactory(methodName, _level, _loggerName) {
+      return realMethod(methodName) || enableLoggingWhenConsoleArrives.apply(this, arguments);
+    }
+    function Logger(name, factory) {
+      var self = this;
+      var inheritedLevel;
+      var defaultLevel;
+      var userLevel;
+      var storageKey = "loglevel";
+      if (typeof name === "string") {
+        storageKey += ":" + name;
+      } else if (typeof name === "symbol") {
+        storageKey = undefined;
+      }
+      function persistLevelIfPossible(levelNum) {
+        var levelName = (logMethods[levelNum] || "silent").toUpperCase();
+        if (typeof window === undefinedType || !storageKey)
+          return;
+        try {
+          window.localStorage[storageKey] = levelName;
+          return;
+        } catch (ignore) {}
+        try {
+          window.document.cookie = encodeURIComponent(storageKey) + "=" + levelName + ";";
+        } catch (ignore) {}
+      }
+      function getPersistedLevel() {
+        var storedLevel;
+        if (typeof window === undefinedType || !storageKey)
+          return;
+        try {
+          storedLevel = window.localStorage[storageKey];
+        } catch (ignore) {}
+        if (typeof storedLevel === undefinedType) {
+          try {
+            var cookie = window.document.cookie;
+            var cookieName = encodeURIComponent(storageKey);
+            var location = cookie.indexOf(cookieName + "=");
+            if (location !== -1) {
+              storedLevel = /^([^;]+)/.exec(cookie.slice(location + cookieName.length + 1))[1];
+            }
+          } catch (ignore) {}
+        }
+        if (self.levels[storedLevel] === undefined) {
+          storedLevel = undefined;
+        }
+        return storedLevel;
+      }
+      function clearPersistedLevel() {
+        if (typeof window === undefinedType || !storageKey)
+          return;
+        try {
+          window.localStorage.removeItem(storageKey);
+        } catch (ignore) {}
+        try {
+          window.document.cookie = encodeURIComponent(storageKey) + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC";
+        } catch (ignore) {}
+      }
+      function normalizeLevel(input) {
+        var level = input;
+        if (typeof level === "string" && self.levels[level.toUpperCase()] !== undefined) {
+          level = self.levels[level.toUpperCase()];
+        }
+        if (typeof level === "number" && level >= 0 && level <= self.levels.SILENT) {
+          return level;
+        } else {
+          throw new TypeError("log.setLevel() called with invalid level: " + input);
+        }
+      }
+      self.name = name;
+      self.levels = {
+        TRACE: 0,
+        DEBUG: 1,
+        INFO: 2,
+        WARN: 3,
+        ERROR: 4,
+        SILENT: 5
+      };
+      self.methodFactory = factory || defaultMethodFactory;
+      self.getLevel = function() {
+        if (userLevel != null) {
+          return userLevel;
+        } else if (defaultLevel != null) {
+          return defaultLevel;
+        } else {
+          return inheritedLevel;
+        }
+      };
+      self.setLevel = function(level, persist) {
+        userLevel = normalizeLevel(level);
+        if (persist !== false) {
+          persistLevelIfPossible(userLevel);
+        }
+        return replaceLoggingMethods.call(self);
+      };
+      self.setDefaultLevel = function(level) {
+        defaultLevel = normalizeLevel(level);
+        if (!getPersistedLevel()) {
+          self.setLevel(level, false);
+        }
+      };
+      self.resetLevel = function() {
+        userLevel = null;
+        clearPersistedLevel();
+        replaceLoggingMethods.call(self);
+      };
+      self.enableAll = function(persist) {
+        self.setLevel(self.levels.TRACE, persist);
+      };
+      self.disableAll = function(persist) {
+        self.setLevel(self.levels.SILENT, persist);
+      };
+      self.rebuild = function() {
+        if (defaultLogger !== self) {
+          inheritedLevel = normalizeLevel(defaultLogger.getLevel());
+        }
+        replaceLoggingMethods.call(self);
+        if (defaultLogger === self) {
+          for (var childName in _loggersByName) {
+            _loggersByName[childName].rebuild();
+          }
+        }
+      };
+      inheritedLevel = normalizeLevel(defaultLogger ? defaultLogger.getLevel() : "WARN");
+      var initialLevel = getPersistedLevel();
+      if (initialLevel != null) {
+        userLevel = normalizeLevel(initialLevel);
+      }
+      replaceLoggingMethods.call(self);
+    }
+    defaultLogger = new Logger;
+    defaultLogger.getLogger = function getLogger(name) {
+      if (typeof name !== "symbol" && typeof name !== "string" || name === "") {
+        throw new TypeError("You must supply a name when creating a logger.");
+      }
+      var logger = _loggersByName[name];
+      if (!logger) {
+        logger = _loggersByName[name] = new Logger(name, defaultLogger.methodFactory);
+      }
+      return logger;
+    };
+    var _log = typeof window !== undefinedType ? window.log : undefined;
+    defaultLogger.noConflict = function() {
+      if (typeof window !== undefinedType && window.log === defaultLogger) {
+        window.log = _log;
+      }
+      return defaultLogger;
+    };
+    defaultLogger.getLoggers = function getLoggers() {
+      return _loggersByName;
+    };
+    defaultLogger["default"] = defaultLogger;
+    return defaultLogger;
+  });
+});
+
+// src/HomieDevice.ts
+class HomieDevice {
+  constructor(id, name = id, type = "") {
+    this.id = id;
+    this.name = name;
+    this.type = type;
+    this.nodes = new Map;
+  }
+  addNode(node) {
+    this.nodes.set(node.id, node);
+  }
+  removeNode(node) {
+    this.nodes.delete(node.id);
+  }
+  getNode(id) {
+    return this.nodes.get(id);
+  }
+  getAllNodes() {
+    return Array.from(this.nodes.values());
+  }
+}
+
+// src/HomieDeviceElement.ts
+import { LitElement, html as html2, css } from "lit";
+import { customElement, property } from "lit/decorators.js";
+
+// src/HomieNodeComponent.ts
+import { html, render } from "lit";
+
+// src/PropertyBindingManager.ts
+class PropertyBindingManager {
+  constructor(observer) {
+    this.observer = observer;
+    this.bindings = new Map;
+    this.transformers = new Map;
+    if (this.observer) {
+      this.setupSubscription();
+    }
+    this.registerDefaultTransformers();
+  }
+  registerDefaultTransformers() {
+    this.registerTransformer("json", (val) => {
+      try {
+        return typeof val === "string" ? JSON.parse(val) : val;
+      } catch (e) {
+        return val;
+      }
+    });
+  }
+  registerTransformer(name, transformer) {
+    this.transformers.set(name, transformer);
+  }
+  getTransformer(name) {
+    return this.transformers.get(name);
+  }
+  setupSubscription() {
+    if (this.observer) {
+      this.observer.updated$.subscribe((event) => {
+        if (event.type === "property") {
+          const path = `${event.device.id}/${event.node.id}/${event.property.id}`;
+          this.updateBindingsForPath(path, event.property.value);
+        }
+      });
+    }
+  }
+  bindPath(path, element, attribute, transformer) {
+    let pathBindings = this.bindings.get(path);
+    if (!pathBindings) {
+      pathBindings = [];
+      this.bindings.set(path, pathBindings);
+    }
+    let transformerFn;
+    if (typeof transformer === "string") {
+      transformerFn = this.getTransformer(transformer);
+    } else {
+      transformerFn = transformer;
+    }
+    pathBindings.push({ element, attribute, transformer: transformerFn });
+  }
+  updateBindingsForPath(path, value) {
+    const pathBindings = this.bindings.get(path);
+    if (pathBindings) {
+      pathBindings.forEach(({ element, attribute, transformer }) => {
+        let finalValue = value;
+        if (transformer) {
+          try {
+            finalValue = transformer(value);
+          } catch (e) {
+            console.error(`Error applying transformer for path ${path}:`, e);
+          }
+        }
+        if (typeof finalValue === "object") {
+          element.setAttribute(attribute, finalValue);
+        } else {
+          element.setAttribute(attribute, finalValue.toString());
+        }
+      });
+    }
+  }
+}
+
+// src/HomieNodeComponent.ts
+class HomieNodeComponent extends HTMLElement {
+  constructor(node) {
+    super();
+    this.node = node;
+    this.bindingManager = new PropertyBindingManager;
+  }
+  connectedCallback() {
+    this.render();
+  }
+  render() {
+    const template = html`
       <div class="homie-node">
         <h2>${this.node.name}</h2>
-        ${this.node.getAllProperties().map((e=>u.html`
+        ${this.node.getAllProperties().map((prop) => html`
           <div class="property">
-            <span>${e.name}: </span>
-            <span>${e.getValue()}</span>
+            <span>${prop.name}: </span>
+            <span>${prop.getValue()}</span>
           </div>
-        `))}
+        `)}
       </div>
-    `;(0,u.render)(e,this),this.node.getAllProperties().forEach((e=>{const t=this.querySelector(`.property:has(span:contains('${e.name}'))`);t instanceof HTMLElement&&this.bindingManager.bindProperty(e,t,"data-value")}))}}customElements.define("homie-node",h);var v=function(e,t,r,n){var o,i=arguments.length,s=i<3?t:null===n?n=Object.getOwnPropertyDescriptor(t,r):n;if("object"==typeof Reflect&&"function"==typeof Reflect.decorate)s=Reflect.decorate(e,t,r,n);else for(var c=e.length-1;c>=0;c--)(o=e[c])&&(s=(i<3?o(s):i>3?o(t,r,s):o(t,r))||s);return i>3&&s&&Object.defineProperty(t,r,s),s};let y=class extends u.LitElement{render(){var e;return u.html`
-      <div class="homie-device">
-        ${null===(e=this.device)||void 0===e?void 0:e.getAllNodes().map((e=>u.html`
-          <homie-node .node=${e}></homie-node>
-        `))}
-      </div>
-    `}};var b,m;y.styles=u.css`
+    `;
+    render(template, this);
+    this.node.getAllProperties().forEach((prop) => {
+      const element = this.querySelector(`.property`);
+      if (element instanceof HTMLElement) {
+        this.bindingManager.bindPath(prop.id, element, "data-value");
+      }
+    });
+  }
+}
+customElements.define("homie-node", HomieNodeComponent);
+
+// src/HomieDeviceElement.ts
+class HomieDeviceElement extends LitElement {
+  constructor() {
+    super(...arguments);
+  }
+  static styles = css`
     :host {
       display: block;
       padding: 16px;
       max-width: 800px;
       margin: 0 auto;
     }
-  `,v([(m={type:Object},(e,t)=>void 0!==t?((e,t,r)=>{t.constructor.createProperty(r,e)})(m,e,t):a(m,e)),function(e,t){if("object"==typeof Reflect&&"function"==typeof Reflect.metadata)return Reflect.metadata(e,t)}("design:type",c)],y.prototype,"device",void 0),y=v([(b="homie-device",e=>"function"==typeof e?((e,t)=>(customElements.define(e,t),t))(b,e):((e,t)=>{const{kind:r,elements:n}=t;return{kind:r,elements:n,finisher(t){customElements.define(e,t)}}})(b,e))],y);class g{constructor(e,t=e,r=""){this.id=e,this.name=t,this.type=r,this.properties=new Map}addProperty(e){this.properties.set(e.id,e)}getProperty(e){return this.properties.get(e)}getAllProperties(){return Array.from(this.properties.values())}}class w{constructor(e,t=e,r,n,o=""){this.id=e,this.name=t,this.value=r,this.dataType=n,this.format=o}setValue(e){this.value=e}getValue(){return this.value}}const x=(e=>{var t={};return i.d(t,e),t})({Subject:()=>t.Subject}),S=(e=>{var t={};return i.d(t,e),t})({default:()=>r.default});var E=i(65),P=i.n(E);P().setLevel(P().levels.INFO);const _=P().getLogger("homie-lit");_.setLevel("info");const I=_;var O;!function(e){e.Device="device",e.Node="node",e.Property="property"}(O||(O={}));class T{constructor(e,t={},r){this.client=S.default.connect(e),this.homiePrefix=t.homiePrefix||"homie",this.messageCallback=r,this.client.on("connect",(()=>I.info("Connected to MQTT broker"))),this.client.on("message",((e,t)=>this.handleMessage(e,t)))}subscribe(e){const t=this.getSubscriptionTopic(e);this.client.subscribe(t)}publish(e,t){this.client.publish(this.homiePrefix+"/"+e,t)}getSubscriptionTopic(e){return e.startsWith(this.homiePrefix)?e:`${this.homiePrefix}/${e}`}handleMessage(e,t){const r=e.split("/");if(r[0]!==this.homiePrefix||r.length<3)return;const[,n,o,i]=r,s=t.toString();"$state"===o?this.handleDeviceState(n,s):void 0===i?this.handleNodeState(n,o,s):this.handlePropertyState(n,o,i,s)}handleDeviceState(e,t){const r={id:e,nodes:{}},n={type:O.Device,device:r};this.messageCallback(n)}handleNodeState(e,t,r){const n={id:e,nodes:{}},o={id:t,properties:{}},i={type:O.Node,device:n,node:o};this.messageCallback(i)}handlePropertyState(e,t,r,n){const o={id:e,nodes:{}},i={id:t,properties:{}},s={id:r,value:n},c={type:O.Property,device:o,node:i,property:s};this.messageCallback(c)}disconnect(){this.client&&!this.client.disconnected&&this.client.end()}}class U{constructor(e){this.messageHandler=e,this.devices={},this.onCreate=new x.Subject,this.onUpdate=new x.Subject,this.onDelete=new x.Subject,I.debug("HomieObserver constructor called")}subscribe(e){this.messageHandler.subscribe(e)}publish(e,t){this.messageHandler.publish(e,t)}get created$(){return this.onCreate.asObservable()}get updated$(){return this.onUpdate.asObservable()}get deleted$(){return this.onDelete.asObservable()}processEvent(e){switch(I.debug("HomieObserver processing event:",e),e.type){case O.Device:this.processDeviceEvent(e);break;case O.Node:this.processNodeEvent(e);break;case O.Property:this.processPropertyEvent(e)}}processDeviceEvent(e){const{device:t}=e;this.devices[t.id]?this.onUpdate.next(e):(this.devices[t.id]=t,this.onCreate.next(e))}processNodeEvent(e){const{device:t,node:r}=e;this.devices[t.id]||(this.devices[t.id]=t,this.onCreate.next({type:O.Device,device:t})),this.devices[t.id].nodes[r.id]?this.onUpdate.next(e):(this.devices[t.id].nodes[r.id]=r,this.onCreate.next(e))}processPropertyEvent(e){I.debug("Processing property event",{event:e});const{device:t,node:r,property:n}=e;this.devices[t.id]||(this.devices[t.id]=t,this.onCreate.next({type:O.Device,device:t}),I.debug("Emitted create event for device",{deviceId:t.id})),this.devices[t.id].nodes[r.id]||(this.devices[t.id].nodes[r.id]=r,this.onCreate.next({type:O.Node,device:t,node:r}),I.debug("Emitted create event for node",{deviceId:t.id,nodeId:r.id}));const o=this.devices[t.id].nodes[r.id].properties[n.id];o?o.value!==n.value&&(this.devices[t.id].nodes[r.id].properties[n.id]=n,this.onUpdate.next(e),I.debug("Emitted update event for property",{deviceId:t.id,nodeId:r.id,propertyId:n.id})):(this.devices[t.id].nodes[r.id].properties[n.id]=n,this.onCreate.next(e),this.onUpdate.next(e),I.debug("Emitted create and update events for new property",{deviceId:t.id,nodeId:r.id,propertyId:n.id}))}}function A(e,t={}){let r;const n=new T(e,t,(e=>{r&&r.processEvent(e)}));return r=new U(n),r}function C(e){return"function"==typeof e}function k(e){return function(t){if(function(e){return C(null==e?void 0:e.lift)}(t))return t.lift((function(t){try{return e(t,this)}catch(e){this.error(e)}}));throw new TypeError("Unable to lift unknown Observable type")}}var j=function(e,t){return j=Object.setPrototypeOf||{__proto__:[]}instanceof Array&&function(e,t){e.__proto__=t}||function(e,t){for(var r in t)Object.prototype.hasOwnProperty.call(t,r)&&(e[r]=t[r])},j(e,t)};function N(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Class extends value "+String(t)+" is not a constructor or null");function r(){this.constructor=e}j(e,t),e.prototype=null===t?Object.create(t):(r.prototype=t.prototype,new r)}function $(e,t){var r,n,o,i={label:0,sent:function(){if(1&o[0])throw o[1];return o[1]},trys:[],ops:[]},s=Object.create(("function"==typeof Iterator?Iterator:Object).prototype);return s.next=c(0),s.throw=c(1),s.return=c(2),"function"==typeof Symbol&&(s[Symbol.iterator]=function(){return this}),s;function c(c){return function(u){return function(c){if(r)throw new TypeError("Generator is already executing.");for(;s&&(s=0,c[0]&&(i=0)),i;)try{if(r=1,n&&(o=2&c[0]?n.return:c[0]?n.throw||((o=n.return)&&o.call(n),0):n.next)&&!(o=o.call(n,c[1])).done)return o;switch(n=0,o&&(c=[2&c[0],o.value]),c[0]){case 0:case 1:o=c;break;case 4:return i.label++,{value:c[1],done:!1};case 5:i.label++,n=c[1],c=[0];continue;case 7:c=i.ops.pop(),i.trys.pop();continue;default:if(!((o=(o=i.trys).length>0&&o[o.length-1])||6!==c[0]&&2!==c[0])){i=0;continue}if(3===c[0]&&(!o||c[1]>o[0]&&c[1]<o[3])){i.label=c[1];break}if(6===c[0]&&i.label<o[1]){i.label=o[1],o=c;break}if(o&&i.label<o[2]){i.label=o[2],i.ops.push(c);break}o[2]&&i.ops.pop(),i.trys.pop();continue}c=t.call(e,i)}catch(e){c=[6,e],n=0}finally{r=o=0}if(5&c[0])throw c[1];return{value:c[0]?c[1]:void 0,done:!0}}([c,u])}}}function L(e){var t="function"==typeof Symbol&&Symbol.iterator,r=t&&e[t],n=0;if(r)return r.call(e);if(e&&"number"==typeof e.length)return{next:function(){return e&&n>=e.length&&(e=void 0),{value:e&&e[n++],done:!e}}};throw new TypeError(t?"Object is not iterable.":"Symbol.iterator is not defined.")}function H(e,t){var r="function"==typeof Symbol&&e[Symbol.iterator];if(!r)return e;var n,o,i=r.call(e),s=[];try{for(;(void 0===t||t-- >0)&&!(n=i.next()).done;)s.push(n.value)}catch(e){o={error:e}}finally{try{n&&!n.done&&(r=i.return)&&r.call(i)}finally{if(o)throw o.error}}return s}function R(e,t,r){if(r||2===arguments.length)for(var n,o=0,i=t.length;o<i;o++)!n&&o in t||(n||(n=Array.prototype.slice.call(t,0,o)),n[o]=t[o]);return e.concat(n||Array.prototype.slice.call(t))}function M(e){return this instanceof M?(this.v=e,this):new M(e)}function D(e){var t=e((function(e){Error.call(e),e.stack=(new Error).stack}));return t.prototype=Object.create(Error.prototype),t.prototype.constructor=t,t}Object.create,Object.create,"function"==typeof SuppressedError&&SuppressedError;var B=D((function(e){return function(t){e(this),this.message=t?t.length+" errors occurred during unsubscription:\n"+t.map((function(e,t){return t+1+") "+e.toString()})).join("\n  "):"",this.name="UnsubscriptionError",this.errors=t}}));function z(e,t){if(e){var r=e.indexOf(t);0<=r&&e.splice(r,1)}}var F=function(){function e(e){this.initialTeardown=e,this.closed=!1,this._parentage=null,this._finalizers=null}var t;return e.prototype.unsubscribe=function(){var e,t,r,n,o;if(!this.closed){this.closed=!0;var i=this._parentage;if(i)if(this._parentage=null,Array.isArray(i))try{for(var s=L(i),c=s.next();!c.done;c=s.next())c.value.remove(this)}catch(t){e={error:t}}finally{try{c&&!c.done&&(t=s.return)&&t.call(s)}finally{if(e)throw e.error}}else i.remove(this);var u=this.initialTeardown;if(C(u))try{u()}catch(e){o=e instanceof B?e.errors:[e]}var a=this._finalizers;if(a){this._finalizers=null;try{for(var l=L(a),d=l.next();!d.done;d=l.next()){var p=d.value;try{Y(p)}catch(e){o=null!=o?o:[],e instanceof B?o=R(R([],H(o)),H(e.errors)):o.push(e)}}}catch(e){r={error:e}}finally{try{d&&!d.done&&(n=l.return)&&n.call(l)}finally{if(r)throw r.error}}}if(o)throw new B(o)}},e.prototype.add=function(t){var r;if(t&&t!==this)if(this.closed)Y(t);else{if(t instanceof e){if(t.closed||t._hasParent(this))return;t._addParent(this)}(this._finalizers=null!==(r=this._finalizers)&&void 0!==r?r:[]).push(t)}},e.prototype._hasParent=function(e){var t=this._parentage;return t===e||Array.isArray(t)&&t.includes(e)},e.prototype._addParent=function(e){var t=this._parentage;this._parentage=Array.isArray(t)?(t.push(e),t):t?[t,e]:e},e.prototype._removeParent=function(e){var t=this._parentage;t===e?this._parentage=null:Array.isArray(t)&&z(t,e)},e.prototype.remove=function(t){var r=this._finalizers;r&&z(r,t),t instanceof e&&t._removeParent(this)},e.EMPTY=((t=new e).closed=!0,t),e}(),G=F.EMPTY;function q(e){return e instanceof F||e&&"closed"in e&&C(e.remove)&&C(e.add)&&C(e.unsubscribe)}function Y(e){C(e)?e():e.unsubscribe()}var V=null,X=null,W=void 0,Z=!1,J=!1,K={setTimeout:function(e,t){for(var r=[],n=2;n<arguments.length;n++)r[n-2]=arguments[n];var o=K.delegate;return(null==o?void 0:o.setTimeout)?o.setTimeout.apply(o,R([e,t],H(r))):setTimeout.apply(void 0,R([e,t],H(r)))},clearTimeout:function(e){var t=K.delegate;return((null==t?void 0:t.clearTimeout)||clearTimeout)(e)},delegate:void 0};function Q(e){K.setTimeout((function(){if(!V)throw e;V(e)}))}function ee(){}var te=re("C",void 0,void 0);function re(e,t,r){return{kind:e,value:t,error:r}}var ne=null;function oe(e){if(Z){var t=!ne;if(t&&(ne={errorThrown:!1,error:null}),e(),t){var r=ne,n=r.errorThrown,o=r.error;if(ne=null,n)throw o}}else e()}var ie=function(e){function t(t){var r=e.call(this)||this;return r.isStopped=!1,t?(r.destination=t,q(t)&&t.add(r)):r.destination=pe,r}return N(t,e),t.create=function(e,t,r){return new ae(e,t,r)},t.prototype.next=function(e){this.isStopped?de(function(e){return re("N",e,void 0)}(e),this):this._next(e)},t.prototype.error=function(e){this.isStopped?de(re("E",void 0,e),this):(this.isStopped=!0,this._error(e))},t.prototype.complete=function(){this.isStopped?de(te,this):(this.isStopped=!0,this._complete())},t.prototype.unsubscribe=function(){this.closed||(this.isStopped=!0,e.prototype.unsubscribe.call(this),this.destination=null)},t.prototype._next=function(e){this.destination.next(e)},t.prototype._error=function(e){try{this.destination.error(e)}finally{this.unsubscribe()}},t.prototype._complete=function(){try{this.destination.complete()}finally{this.unsubscribe()}},t}(F),se=Function.prototype.bind;function ce(e,t){return se.call(e,t)}var ue=function(){function e(e){this.partialObserver=e}return e.prototype.next=function(e){var t=this.partialObserver;if(t.next)try{t.next(e)}catch(e){le(e)}},e.prototype.error=function(e){var t=this.partialObserver;if(t.error)try{t.error(e)}catch(e){le(e)}else le(e)},e.prototype.complete=function(){var e=this.partialObserver;if(e.complete)try{e.complete()}catch(e){le(e)}},e}(),ae=function(e){function t(t,r,n){var o,i,s=e.call(this)||this;return C(t)||!t?o={next:null!=t?t:void 0,error:null!=r?r:void 0,complete:null!=n?n:void 0}:s&&J?((i=Object.create(t)).unsubscribe=function(){return s.unsubscribe()},o={next:t.next&&ce(t.next,i),error:t.error&&ce(t.error,i),complete:t.complete&&ce(t.complete,i)}):o=t,s.destination=new ue(o),s}return N(t,e),t}(ie);function le(e){var t;Z?(t=e,Z&&ne&&(ne.errorThrown=!0,ne.error=t)):Q(e)}function de(e,t){var r=X;r&&K.setTimeout((function(){return r(e,t)}))}var pe={closed:!0,next:ee,error:function(e){throw e},complete:ee};function fe(e,t,r,n,o){return new he(e,t,r,n,o)}var he=function(e){function t(t,r,n,o,i,s){var c=e.call(this,t)||this;return c.onFinalize=i,c.shouldUnsubscribe=s,c._next=r?function(e){try{r(e)}catch(e){t.error(e)}}:e.prototype._next,c._error=o?function(e){try{o(e)}catch(e){t.error(e)}finally{this.unsubscribe()}}:e.prototype._error,c._complete=n?function(){try{n()}catch(e){t.error(e)}finally{this.unsubscribe()}}:e.prototype._complete,c}return N(t,e),t.prototype.unsubscribe=function(){var t;if(!this.shouldUnsubscribe||this.shouldUnsubscribe()){var r=this.closed;e.prototype.unsubscribe.call(this),!r&&(null===(t=this.onFinalize)||void 0===t||t.call(this))}},t}(ie);function ve(e){return e}function ye(e,t,r){var n=C(e)||t||r?{next:e,error:t,complete:r}:e;return n?k((function(e,t){var r;null===(r=n.subscribe)||void 0===r||r.call(n);var o=!0;e.subscribe(fe(t,(function(e){var r;null===(r=n.next)||void 0===r||r.call(n,e),t.next(e)}),(function(){var e;o=!1,null===(e=n.complete)||void 0===e||e.call(n),t.complete()}),(function(e){var r;o=!1,null===(r=n.error)||void 0===r||r.call(n,e),t.error(e)}),(function(){var e,t;o&&(null===(e=n.unsubscribe)||void 0===e||e.call(n)),null===(t=n.finalize)||void 0===t||t.call(n)})))})):ve}function be(e,t){return k((function(r,n){var o=0;r.subscribe(fe(n,(function(r){return e.call(t,r,o++)&&n.next(r)})))}))}function me(e,t){return k((function(r,n){var o=0;r.subscribe(fe(n,(function(r){n.next(e.call(t,r,o++))})))}))}var ge=function(e){function t(t,r){return e.call(this)||this}return N(t,e),t.prototype.schedule=function(e,t){return void 0===t&&(t=0),this},t}(F),we={setInterval:function(e,t){for(var r=[],n=2;n<arguments.length;n++)r[n-2]=arguments[n];var o=we.delegate;return(null==o?void 0:o.setInterval)?o.setInterval.apply(o,R([e,t],H(r))):setInterval.apply(void 0,R([e,t],H(r)))},clearInterval:function(e){var t=we.delegate;return((null==t?void 0:t.clearInterval)||clearInterval)(e)},delegate:void 0},xe=function(e){function t(t,r){var n=e.call(this,t,r)||this;return n.scheduler=t,n.work=r,n.pending=!1,n}return N(t,e),t.prototype.schedule=function(e,t){var r;if(void 0===t&&(t=0),this.closed)return this;this.state=e;var n=this.id,o=this.scheduler;return null!=n&&(this.id=this.recycleAsyncId(o,n,t)),this.pending=!0,this.delay=t,this.id=null!==(r=this.id)&&void 0!==r?r:this.requestAsyncId(o,this.id,t),this},t.prototype.requestAsyncId=function(e,t,r){return void 0===r&&(r=0),we.setInterval(e.flush.bind(e,this),r)},t.prototype.recycleAsyncId=function(e,t,r){if(void 0===r&&(r=0),null!=r&&this.delay===r&&!1===this.pending)return t;null!=t&&we.clearInterval(t)},t.prototype.execute=function(e,t){if(this.closed)return new Error("executing a cancelled action");this.pending=!1;var r=this._execute(e,t);if(r)return r;!1===this.pending&&null!=this.id&&(this.id=this.recycleAsyncId(this.scheduler,this.id,null))},t.prototype._execute=function(e,t){var r,n=!1;try{this.work(e)}catch(e){n=!0,r=e||new Error("Scheduled action threw falsy error")}if(n)return this.unsubscribe(),r},t.prototype.unsubscribe=function(){if(!this.closed){var t=this.id,r=this.scheduler,n=r.actions;this.work=this.state=this.scheduler=null,this.pending=!1,z(n,this),null!=t&&(this.id=this.recycleAsyncId(r,t,null)),this.delay=null,e.prototype.unsubscribe.call(this)}},t}(ge),Se={now:function(){return(Se.delegate||Date).now()},delegate:void 0},Ee=function(){function e(t,r){void 0===r&&(r=e.now),this.schedulerActionCtor=t,this.now=r}return e.prototype.schedule=function(e,t,r){return void 0===t&&(t=0),new this.schedulerActionCtor(this,e).schedule(r,t)},e.now=Se.now,e}(),Pe=new(function(e){function t(t,r){void 0===r&&(r=Ee.now);var n=e.call(this,t,r)||this;return n.actions=[],n._active=!1,n}return N(t,e),t.prototype.flush=function(e){var t=this.actions;if(this._active)t.push(e);else{var r;this._active=!0;do{if(r=e.execute(e.state,e.delay))break}while(e=t.shift());if(this._active=!1,r){for(;e=t.shift();)e.unsubscribe();throw r}}},t}(Ee))(xe);function _e(e,t,r,n,o){void 0===n&&(n=0),void 0===o&&(o=!1);var i=t.schedule((function(){r(),o?e.add(this.schedule(null,n)):this.unsubscribe()}),n);if(e.add(i),!o)return i}var Ie="function"==typeof Symbol&&Symbol.observable||"@@observable";var Oe=function(){function e(e){e&&(this._subscribe=e)}return e.prototype.lift=function(t){var r=new e;return r.source=this,r.operator=t,r},e.prototype.subscribe=function(e,t,r){var n,o=this,i=(n=e)&&n instanceof ie||function(e){return e&&C(e.next)&&C(e.error)&&C(e.complete)}(n)&&q(n)?e:new ae(e,t,r);return oe((function(){var e=o,t=e.operator,r=e.source;i.add(t?t.call(i,r):r?o._subscribe(i):o._trySubscribe(i))})),i},e.prototype._trySubscribe=function(e){try{return this._subscribe(e)}catch(t){e.error(t)}},e.prototype.forEach=function(e,t){var r=this;return new(t=Te(t))((function(t,n){var o=new ae({next:function(t){try{e(t)}catch(e){n(e),o.unsubscribe()}},error:n,complete:t});r.subscribe(o)}))},e.prototype._subscribe=function(e){var t;return null===(t=this.source)||void 0===t?void 0:t.subscribe(e)},e.prototype[Ie]=function(){return this},e.prototype.pipe=function(){for(var e=[],t=0;t<arguments.length;t++)e[t]=arguments[t];return(0===(r=e).length?ve:1===r.length?r[0]:function(e){return r.reduce((function(e,t){return t(e)}),e)})(this);var r},e.prototype.toPromise=function(e){var t=this;return new(e=Te(e))((function(e,r){var n;t.subscribe((function(e){return n=e}),(function(e){return r(e)}),(function(){return e(n)}))}))},e.create=function(t){return new e(t)},e}();function Te(e){var t;return null!==(t=null!=e?e:W)&&void 0!==t?t:Promise}var Ue="function"==typeof Symbol&&Symbol.iterator?Symbol.iterator:"@@iterator";function Ae(e){if(e instanceof Oe)return e;if(null!=e){if(function(e){return C(e[Ie])}(e))return i=e,new Oe((function(e){var t=i[Ie]();if(C(t.subscribe))return t.subscribe(e);throw new TypeError("Provided object does not correctly implement Symbol.observable")}));if(function(e){return e&&"number"==typeof e.length&&"function"!=typeof e}(e))return o=e,new Oe((function(e){for(var t=0;t<o.length&&!e.closed;t++)e.next(o[t]);e.complete()}));if(C(null==(n=e)?void 0:n.then))return r=e,new Oe((function(e){r.then((function(t){e.closed||(e.next(t),e.complete())}),(function(t){return e.error(t)})).then(null,Q)}));if(function(e){return Symbol.asyncIterator&&C(null==e?void 0:e[Symbol.asyncIterator])}(e))return Ce(e);if(function(e){return C(null==e?void 0:e[Ue])}(e))return t=e,new Oe((function(e){var r,n;try{for(var o=L(t),i=o.next();!i.done;i=o.next()){var s=i.value;if(e.next(s),e.closed)return}}catch(e){r={error:e}}finally{try{i&&!i.done&&(n=o.return)&&n.call(o)}finally{if(r)throw r.error}}e.complete()}));if(function(e){return C(null==e?void 0:e.getReader)}(e))return Ce(function(e){return function(e,t,r){if(!Symbol.asyncIterator)throw new TypeError("Symbol.asyncIterator is not defined.");var n,o=r.apply(e,t||[]),i=[];return n=Object.create(("function"==typeof AsyncIterator?AsyncIterator:Object).prototype),s("next"),s("throw"),s("return",(function(e){return function(t){return Promise.resolve(t).then(e,a)}})),n[Symbol.asyncIterator]=function(){return this},n;function s(e,t){o[e]&&(n[e]=function(t){return new Promise((function(r,n){i.push([e,t,r,n])>1||c(e,t)}))},t&&(n[e]=t(n[e])))}function c(e,t){try{(r=o[e](t)).value instanceof M?Promise.resolve(r.value.v).then(u,a):l(i[0][2],r)}catch(e){l(i[0][3],e)}var r}function u(e){c("next",e)}function a(e){c("throw",e)}function l(e,t){e(t),i.shift(),i.length&&c(i[0][0],i[0][1])}}(this,arguments,(function(){var t,r,n;return $(this,(function(o){switch(o.label){case 0:t=e.getReader(),o.label=1;case 1:o.trys.push([1,,9,10]),o.label=2;case 2:return[4,M(t.read())];case 3:return r=o.sent(),n=r.value,r.done?[4,M(void 0)]:[3,5];case 4:return[2,o.sent()];case 5:return[4,M(n)];case 6:return[4,o.sent()];case 7:return o.sent(),[3,2];case 8:return[3,10];case 9:return t.releaseLock(),[7];case 10:return[2]}}))}))}(e))}var t,r,n,o,i;throw function(e){return new TypeError("You provided "+(null!==e&&"object"==typeof e?"an invalid object":"'"+e+"'")+" where a stream was expected. You can provide an Observable, Promise, ReadableStream, Array, AsyncIterable, or Iterable.")}(e)}function Ce(e){return new Oe((function(t){(function(e,t){var r,n,o,i,s,c,u,a;return s=this,c=void 0,a=function(){var s,c;return $(this,(function(u){switch(u.label){case 0:u.trys.push([0,5,6,11]),r=function(e){if(!Symbol.asyncIterator)throw new TypeError("Symbol.asyncIterator is not defined.");var t,r=e[Symbol.asyncIterator];return r?r.call(e):(e=L(e),t={},n("next"),n("throw"),n("return"),t[Symbol.asyncIterator]=function(){return this},t);function n(r){t[r]=e[r]&&function(t){return new Promise((function(n,o){!function(e,t,r,n){Promise.resolve(n).then((function(t){e({value:t,done:r})}),t)}(n,o,(t=e[r](t)).done,t.value)}))}}}(e),u.label=1;case 1:return[4,r.next()];case 2:if((n=u.sent()).done)return[3,4];if(s=n.value,t.next(s),t.closed)return[2];u.label=3;case 3:return[3,1];case 4:return[3,11];case 5:return c=u.sent(),o={error:c},[3,11];case 6:return u.trys.push([6,,9,10]),n&&!n.done&&(i=r.return)?[4,i.call(r)]:[3,8];case 7:u.sent(),u.label=8;case 8:return[3,10];case 9:if(o)throw o.error;return[7];case 10:return[7];case 11:return t.complete(),[2]}}))},new((u=void 0)||(u=Promise))((function(e,t){function r(e){try{o(a.next(e))}catch(e){t(e)}}function n(e){try{o(a.throw(e))}catch(e){t(e)}}function o(t){var o;t.done?e(t.value):(o=t.value,o instanceof u?o:new u((function(e){e(o)}))).then(r,n)}o((a=a.apply(s,c||[])).next())}))})(e,t).catch((function(e){return t.error(e)}))}))}var ke=D((function(e){return function(){e(this),this.name="ObjectUnsubscribedError",this.message="object unsubscribed"}})),je=function(e){function t(){var t=e.call(this)||this;return t.closed=!1,t.currentObservers=null,t.observers=[],t.isStopped=!1,t.hasError=!1,t.thrownError=null,t}return N(t,e),t.prototype.lift=function(e){var t=new Ne(this,this);return t.operator=e,t},t.prototype._throwIfClosed=function(){if(this.closed)throw new ke},t.prototype.next=function(e){var t=this;oe((function(){var r,n;if(t._throwIfClosed(),!t.isStopped){t.currentObservers||(t.currentObservers=Array.from(t.observers));try{for(var o=L(t.currentObservers),i=o.next();!i.done;i=o.next())i.value.next(e)}catch(e){r={error:e}}finally{try{i&&!i.done&&(n=o.return)&&n.call(o)}finally{if(r)throw r.error}}}}))},t.prototype.error=function(e){var t=this;oe((function(){if(t._throwIfClosed(),!t.isStopped){t.hasError=t.isStopped=!0,t.thrownError=e;for(var r=t.observers;r.length;)r.shift().error(e)}}))},t.prototype.complete=function(){var e=this;oe((function(){if(e._throwIfClosed(),!e.isStopped){e.isStopped=!0;for(var t=e.observers;t.length;)t.shift().complete()}}))},t.prototype.unsubscribe=function(){this.isStopped=this.closed=!0,this.observers=this.currentObservers=null},Object.defineProperty(t.prototype,"observed",{get:function(){var e;return(null===(e=this.observers)||void 0===e?void 0:e.length)>0},enumerable:!1,configurable:!0}),t.prototype._trySubscribe=function(t){return this._throwIfClosed(),e.prototype._trySubscribe.call(this,t)},t.prototype._subscribe=function(e){return this._throwIfClosed(),this._checkFinalizedStatuses(e),this._innerSubscribe(e)},t.prototype._innerSubscribe=function(e){var t=this,r=this,n=r.hasError,o=r.isStopped,i=r.observers;return n||o?G:(this.currentObservers=null,i.push(e),new F((function(){t.currentObservers=null,z(i,e)})))},t.prototype._checkFinalizedStatuses=function(e){var t=this,r=t.hasError,n=t.thrownError,o=t.isStopped;r?e.error(n):o&&e.complete()},t.prototype.asObservable=function(){var e=new Oe;return e.source=this,e},t.create=function(e,t){return new Ne(e,t)},t}(Oe),Ne=function(e){function t(t,r){var n=e.call(this)||this;return n.destination=t,n.source=r,n}return N(t,e),t.prototype.next=function(e){var t,r;null===(r=null===(t=this.destination)||void 0===t?void 0:t.next)||void 0===r||r.call(t,e)},t.prototype.error=function(e){var t,r;null===(r=null===(t=this.destination)||void 0===t?void 0:t.error)||void 0===r||r.call(t,e)},t.prototype.complete=function(){var e,t;null===(t=null===(e=this.destination)||void 0===e?void 0:e.complete)||void 0===t||t.call(e)},t.prototype._subscribe=function(e){var t,r;return null!==(r=null===(t=this.source)||void 0===t?void 0:t.subscribe(e))&&void 0!==r?r:G},t}(je);function $e(e,t){for(var r=[],n=2;n<arguments.length;n++)r[n-2]=arguments[n];if(!0!==t){if(!1!==t){var o=new ae({next:function(){o.unsubscribe(),e()}});return Ae(t.apply(void 0,R([],H(r)))).subscribe(o)}}else e()}class Le{constructor(e,t=100){this.homieObserver=e,this.bufferTimeMs=t,this.propertyUpdates$=new x.Subject,this.propertyGroups=[],I.info("HomiePropertyBuffer constructor called"),this.setupPropertyUpdateStream(),this.bufferedUpdates$=this.setupBufferedUpdatesStream()}addPropertyGroup(e){this.propertyGroups.push(e)}getPropertyPriority(e,t){const r=this.propertyGroups.find((r=>r.properties.includes(`${e}/${t}`)));return r?r.priority:0}setupPropertyUpdateStream(){I.info("Setting up property update stream"),this.homieObserver.updated$.pipe(ye((e=>I.debug("Received event in setupPropertyUpdateStream",{event:e}))),be((e=>e.type===O.Property)),me((e=>{if(e.type===O.Property){I.debug("Processing property event",{event:e});const t={deviceId:e.device.id,nodeId:e.node.id,propertyId:e.property.id,value:e.property.value,priority:this.getPropertyPriority(e.node.id,e.property.id)};return I.debug("Created BufferedPropertyUpdate",{update:t}),t}throw new Error("Unexpected event type")})),ye((e=>{I.debug("Emitting update to propertyUpdates$",{update:e}),this.propertyUpdates$.next(e)}))).subscribe({next:()=>I.debug("Subscription in setupPropertyUpdateStream emitted a value"),error:e=>I.error("Error in setupPropertyUpdateStream",{error:e}),complete:()=>I.info("Subscription in setupPropertyUpdateStream completed")})}setupBufferedUpdatesStream(){return I.info("Setting up buffered updates stream"),this.propertyUpdates$.pipe(ye((()=>I.debug("propertyUpdates$ emitted a value"))),function(e){for(var t,r,n=[],o=1;o<arguments.length;o++)n[o-1]=arguments[o];var i,s,c,u=null!==(t=(c=(s=i=n)[s.length-1])&&C(c.schedule)?i.pop():void 0)&&void 0!==t?t:Pe,a=null!==(r=n[0])&&void 0!==r?r:null,l=n[1]||1/0;return k((function(t,r){var n=[],o=!1,i=function(e){var t=e.buffer;e.subs.unsubscribe(),z(n,e),r.next(t),o&&s()},s=function(){if(n){var t=new F;r.add(t);var o={buffer:[],subs:t};n.push(o),_e(t,u,(function(){return i(o)}),e)}};null!==a&&a>=0?_e(r,u,s,a,!0):o=!0,s();var c=fe(r,(function(e){var t,r,o=n.slice();try{for(var s=L(o),c=s.next();!c.done;c=s.next()){var u=c.value,a=u.buffer;a.push(e),l<=a.length&&i(u)}}catch(e){t={error:e}}finally{try{c&&!c.done&&(r=s.return)&&r.call(s)}finally{if(t)throw t.error}}}),(function(){for(;null==n?void 0:n.length;)r.next(n.shift().buffer);null==c||c.unsubscribe(),r.complete(),r.unsubscribe()}),void 0,(function(){return n=null}));t.subscribe(c)}))}(this.bufferTimeMs),ye((e=>I.debug("Buffered updates",{updates:e}))),be((e=>e.length>0)),me((e=>(e.sort(((e,t)=>{if(e.priority!==t.priority)return t.priority-e.priority;const r=this.propertyGroups.find((t=>t.properties.includes(`${e.nodeId}/${e.propertyId}`))),n=this.propertyGroups.find((e=>e.properties.includes(`${t.nodeId}/${t.propertyId}`)));return r&&n&&r===n?r.properties.indexOf(`${e.nodeId}/${e.propertyId}`)-n.properties.indexOf(`${t.nodeId}/${t.propertyId}`):0})),I.debug("Sorted updates",{updates:e}),e))),function(e){void 0===e&&(e={});var t=e.connector,r=void 0===t?function(){return new je}:t,n=e.resetOnError,o=void 0===n||n,i=e.resetOnComplete,s=void 0===i||i,c=e.resetOnRefCountZero,u=void 0===c||c;return function(e){var t,n,i,c=0,a=!1,l=!1,d=function(){null==n||n.unsubscribe(),n=void 0},p=function(){d(),t=i=void 0,a=l=!1},f=function(){var e=t;p(),null==e||e.unsubscribe()};return k((function(e,h){c++,l||a||d();var v=i=null!=i?i:r();h.add((function(){0!=--c||l||a||(n=$e(f,u))})),v.subscribe(h),!t&&c>0&&(t=new ae({next:function(e){return v.next(e)},error:function(e){l=!0,d(),n=$e(p,o,e),v.error(e)},complete:function(){a=!0,d(),n=$e(p,s),v.complete()}}),Ae(e).subscribe(t))}))(e)}}())}getBufferedUpdates(){return I.info("Getting buffered updates"),this.bufferedUpdates$}processBufferedUpdates(e){I.info("Setting up buffered updates processor"),this.getBufferedUpdates().subscribe({next:t=>{I.debug("Processing buffered updates",{updates:t}),e(t)},error:e=>I.error("Error in processBufferedUpdates",{error:e}),complete:()=>I.info("processBufferedUpdates subscription completed")})}}const He={HomieDevice:c,HomieDeviceElement:y,HomieNode:g,HomieNodeComponent:h,HomieProperty:w,HomiePropertyBuffer:Le,PropertyBindingManager:f,HomieObserver:U,createMqttHomieObserver:A,logger:I};var Re=s.NB,Me=s.zX,De=s.rX,Be=s.O,ze=s.Rx,Fe=s.oN,Ge=s.CN,qe=s.eE,Ye=s.Zk,Ve=s.Ay,Xe=s.vF;export{Re as HomieDevice,Me as HomieDeviceElement,De as HomieNode,Be as HomieNodeComponent,ze as HomieObserver,Fe as HomieProperty,Ge as HomiePropertyBuffer,qe as PropertyBindingManager,Ye as createMqttHomieObserver,Ve as default,Xe as logger};
+  `;
+  render() {
+    return html2`
+      <div class="homie-device">
+        ${this.device?.getAllNodes().map((node) => html2`
+          <homie-node .node=${node}></homie-node>
+        `)}
+      </div>
+    `;
+  }
+}
+__legacyDecorateClassTS([
+  property({ type: Object }),
+  __legacyMetadataTS("design:type", typeof HomieDevice === "undefined" ? Object : HomieDevice)
+], HomieDeviceElement.prototype, "device", undefined);
+HomieDeviceElement = __legacyDecorateClassTS([
+  customElement("homie-device"),
+  __legacyMetadataTS("design:paramtypes", [])
+], HomieDeviceElement);
+
+// src/HomieNode.ts
+class HomieNode {
+  constructor(id, name = id, type = "") {
+    this.id = id;
+    this.name = name;
+    this.type = type;
+    this.properties = new Map;
+  }
+  addProperty(property) {
+    this.properties.set(property.id, property);
+  }
+  getProperty(id) {
+    return this.properties.get(id);
+  }
+  getAllProperties() {
+    return Array.from(this.properties.values());
+  }
+}
+
+// src/HomieProperty.ts
+class HomieProperty {
+  constructor(id, name = id, value, dataType, format = "") {
+    this.id = id;
+    this.name = name;
+    this.value = value;
+    this.dataType = dataType;
+    this.format = format;
+  }
+  setValue(newValue) {
+    this.value = newValue;
+  }
+  getValue() {
+    return this.value;
+  }
+}
+
+// src/HomieObserver.ts
+import { Subject } from "rxjs";
+import mqtt from "mqtt";
+
+// src/logger.ts
+var import_loglevel = __toESM(require_loglevel());
+import_loglevel.default.setLevel(import_loglevel.default.levels.INFO);
+var logger = import_loglevel.default.getLogger("homie-lit");
+logger.setLevel("info");
+var setLogLevel = (level) => {
+  logger.setLevel(level);
+};
+var logger_default = logger;
+
+// src/HomieObserver.ts
+class MqttClient {
+  constructor(brokerUrl, options = {}, messageCallback, onConnectCallback, onDisconnectCallback) {
+    this.client = mqtt.connect(brokerUrl);
+    this.homiePrefix = options.homiePrefix || "homie";
+    this.messageCallback = messageCallback;
+    this.onConnectCallback = onConnectCallback;
+    this.onDisconnectCallback = onDisconnectCallback;
+    this.client.on("connect", () => {
+      logger_default.info("Connected to MQTT broker");
+      this.onConnectCallback();
+    });
+    this.client.on("close", () => {
+      logger_default.info("Disconnected from MQTT broker");
+      this.onDisconnectCallback();
+    });
+    this.client.on("message", (topic, message) => this.handleMessage(topic, message));
+  }
+  subscribe(pattern) {
+    const subscriptionTopic = this.getSubscriptionTopic(pattern);
+    logger_default.debug(`Subscribing to topic: ${subscriptionTopic}`);
+    this.client.subscribe(subscriptionTopic);
+  }
+  publish(topic, message, options = {}) {
+    const fullTopic = `${this.homiePrefix}/${topic}`;
+    logger_default.debug(`Publishing to topic: ${fullTopic}`);
+    this.client.publish(fullTopic, message, options);
+  }
+  getSubscriptionTopic(pattern) {
+    return pattern.startsWith(this.homiePrefix) ? pattern : `${this.homiePrefix}/${pattern}`;
+  }
+  handleMessage(topic, message) {
+    logger_default.debug(`Received message on topic: ${topic}`);
+    const topicParts = topic.split("/");
+    if (topicParts[0] !== this.homiePrefix || topicParts.length < 3)
+      return;
+    const [, deviceId, nodeId, propertyId] = topicParts;
+    const value = message.toString();
+    if (nodeId === "$state") {
+      this.handleDeviceState(deviceId, value);
+    } else if (propertyId === undefined) {
+      this.handleNodeState(deviceId, nodeId, value);
+    } else {
+      this.handlePropertyState(deviceId, nodeId, propertyId, value);
+    }
+  }
+  handleDeviceState(deviceId, state) {
+    const device = { id: deviceId, nodes: {} };
+    const event = { type: "device" /* Device */, device };
+    this.messageCallback(event);
+  }
+  handleNodeState(deviceId, nodeId, state) {
+    const device = { id: deviceId, nodes: {} };
+    const node = { id: nodeId, properties: {} };
+    const event = { type: "node" /* Node */, device, node };
+    this.messageCallback(event);
+  }
+  handlePropertyState(deviceId, nodeId, propertyId, value) {
+    const device = { id: deviceId, nodes: {} };
+    const node = { id: nodeId, properties: {} };
+    const property = { id: propertyId, value };
+    const event = { type: "property" /* Property */, device, node, property };
+    this.messageCallback(event);
+  }
+  disconnect() {
+    if (this.client && !this.client.disconnected) {
+      this.client.end();
+    }
+  }
+}
+
+class HomieObserver {
+  constructor(messageHandler) {
+    this.messageHandler = messageHandler;
+    this.devices = {};
+    this.onCreate = new Subject;
+    this.onUpdate = new Subject;
+    this.onDelete = new Subject;
+    this.onConnect = new Subject;
+    this.onDisconnect = new Subject;
+    logger_default.debug("HomieObserver constructor called");
+  }
+  subscribe(topic) {
+    this.messageHandler.subscribe(topic);
+  }
+  publish(topic, message, options = {}) {
+    this.messageHandler.publish(topic, message, options);
+  }
+  get created$() {
+    return this.onCreate.asObservable();
+  }
+  get updated$() {
+    return this.onUpdate.asObservable();
+  }
+  get deleted$() {
+    return this.onDelete.asObservable();
+  }
+  get connected$() {
+    return this.onConnect.asObservable();
+  }
+  get disconnected$() {
+    return this.onDisconnect.asObservable();
+  }
+  onConnectEvent() {
+    this.onConnect.next();
+  }
+  onDisconnectEvent() {
+    this.onDisconnect.next();
+  }
+  processEvent(event) {
+    logger_default.debug("HomieObserver processing event:", event);
+    switch (event.type) {
+      case "device" /* Device */:
+        this.processDeviceEvent(event);
+        break;
+      case "node" /* Node */:
+        this.processNodeEvent(event);
+        break;
+      case "property" /* Property */:
+        this.processPropertyEvent(event);
+        break;
+    }
+  }
+  processDeviceEvent(event) {
+    const { device } = event;
+    if (!this.devices[device.id]) {
+      this.devices[device.id] = device;
+      this.onCreate.next(event);
+    } else {
+      this.onUpdate.next(event);
+    }
+  }
+  processNodeEvent(event) {
+    const { device, node } = event;
+    if (!this.devices[device.id]) {
+      this.devices[device.id] = device;
+      this.onCreate.next({ type: "device" /* Device */, device });
+    }
+    if (!this.devices[device.id].nodes[node.id]) {
+      this.devices[device.id].nodes[node.id] = node;
+      this.onCreate.next(event);
+    } else {
+      this.onUpdate.next(event);
+    }
+  }
+  processPropertyEvent(event) {
+    logger_default.debug("Processing property event", { event });
+    const { device, node, property } = event;
+    if (!this.devices[device.id]) {
+      this.devices[device.id] = device;
+      this.onCreate.next({ type: "device" /* Device */, device });
+      logger_default.debug("Emitted create event for device", { deviceId: device.id });
+    }
+    if (!this.devices[device.id].nodes[node.id]) {
+      this.devices[device.id].nodes[node.id] = node;
+      this.onCreate.next({ type: "node" /* Node */, device, node });
+      logger_default.debug("Emitted create event for node", { deviceId: device.id, nodeId: node.id });
+    }
+    const existingProperty = this.devices[device.id].nodes[node.id].properties[property.id];
+    if (!existingProperty) {
+      this.devices[device.id].nodes[node.id].properties[property.id] = property;
+      this.onCreate.next(event);
+      logger_default.debug("Emitted create event for new property", { deviceId: device.id, nodeId: node.id, propertyId: property.id });
+    } else if (existingProperty.value !== property.value) {
+      this.devices[device.id].nodes[node.id].properties[property.id] = property;
+      this.onUpdate.next(event);
+      logger_default.debug("Emitted update event for property", { deviceId: device.id, nodeId: node.id, propertyId: property.id });
+    }
+  }
+}
+function createMqttHomieObserver(brokerUrl, options = {}) {
+  let observer;
+  const mqttClient = new MqttClient(brokerUrl, options, (event) => {
+    if (observer) {
+      observer.processEvent(event);
+    }
+  }, () => {
+    if (observer) {
+      observer.onConnectEvent();
+    }
+  }, () => {
+    if (observer) {
+      observer.onDisconnectEvent();
+    }
+  });
+  observer = new HomieObserver(mqttClient);
+  return observer;
+}
+
+// src/HomiePropertyBuffer.ts
+import { Subject as Subject2, merge } from "rxjs";
+import { bufferTime, filter, map, tap, share } from "rxjs/operators";
+class HomiePropertyBuffer {
+  constructor(homieObserver, bufferTimeMs = 100) {
+    this.homieObserver = homieObserver;
+    this.bufferTimeMs = bufferTimeMs;
+    this.propertyUpdates$ = new Subject2;
+    this.propertyGroups = [];
+    logger_default.info("HomiePropertyBuffer constructor called");
+    this.setupPropertyUpdateStream();
+    this.bufferedUpdates$ = this.setupBufferedUpdatesStream();
+  }
+  addPropertyGroup(group) {
+    this.propertyGroups.push(group);
+  }
+  getPropertyPriority(nodeId, propertyId) {
+    const group = this.propertyGroups.find((g) => g.properties.includes(`${nodeId}/${propertyId}`));
+    return group ? group.priority : 0;
+  }
+  setupPropertyUpdateStream() {
+    logger_default.info("Setting up property update stream");
+    merge(this.homieObserver.created$, this.homieObserver.updated$).pipe(tap((event) => logger_default.debug("Received event in setupPropertyUpdateStream", { event })), filter((event) => event.type === "property" /* Property */), map((event) => {
+      if (event.type === "property" /* Property */) {
+        logger_default.debug("Processing property event", { event });
+        const update = {
+          deviceId: event.device.id,
+          nodeId: event.node.id,
+          propertyId: event.property.id,
+          value: event.property.value,
+          priority: this.getPropertyPriority(event.node.id, event.property.id)
+        };
+        logger_default.debug("Created BufferedPropertyUpdate", { update });
+        return update;
+      }
+      throw new Error("Unexpected event type");
+    }), tap((update) => {
+      logger_default.debug("Emitting update to propertyUpdates$", { update });
+      this.propertyUpdates$.next(update);
+    })).subscribe({
+      next: () => logger_default.debug("Subscription in setupPropertyUpdateStream emitted a value"),
+      error: (err) => logger_default.error("Error in setupPropertyUpdateStream", { error: err }),
+      complete: () => logger_default.info("Subscription in setupPropertyUpdateStream completed")
+    });
+  }
+  setupBufferedUpdatesStream() {
+    logger_default.info("Setting up buffered updates stream");
+    return this.propertyUpdates$.pipe(tap(() => logger_default.debug("propertyUpdates$ emitted a value")), bufferTime(this.bufferTimeMs), tap((updates) => logger_default.debug("Buffered updates", { updates })), filter((updates) => updates.length > 0), map((updates) => {
+      const sortedUpdates = updates.sort((a, b) => {
+        if (a.priority !== b.priority) {
+          return b.priority - a.priority;
+        }
+        const groupA = this.propertyGroups.find((g) => g.properties.includes(`${a.nodeId}/${a.propertyId}`));
+        const groupB = this.propertyGroups.find((g) => g.properties.includes(`${b.nodeId}/${b.propertyId}`));
+        if (groupA && groupB && groupA === groupB) {
+          return groupA.properties.indexOf(`${a.nodeId}/${a.propertyId}`) - groupB.properties.indexOf(`${b.nodeId}/${b.propertyId}`);
+        }
+        return 0;
+      });
+      logger_default.debug("Sorted updates", { updates });
+      return updates;
+    }), share());
+  }
+  getBufferedUpdates() {
+    logger_default.info("Getting buffered updates");
+    return this.bufferedUpdates$;
+  }
+  processBufferedUpdates(processor) {
+    logger_default.info("Setting up buffered updates processor");
+    this.getBufferedUpdates().subscribe({
+      next: (updates) => {
+        logger_default.debug("Processing buffered updates", { updates });
+        processor(updates);
+      },
+      error: (err) => logger_default.error("Error in processBufferedUpdates", { error: err }),
+      complete: () => logger_default.info("processBufferedUpdates subscription completed")
+    });
+  }
+}
+// src/index.ts
+var HomieLit = {
+  HomieDevice,
+  HomieDeviceElement,
+  HomieNode,
+  HomieNodeComponent,
+  HomieProperty,
+  HomiePropertyBuffer,
+  PropertyBindingManager,
+  HomieObserver,
+  createMqttHomieObserver,
+  logger: logger_default,
+  setLogLevel
+};
+var src_default = HomieLit;
+export {
+  HomieDevice,
+  HomieDeviceElement,
+  HomieNode,
+  HomieNodeComponent,
+  HomieObserver,
+  HomieProperty,
+  HomiePropertyBuffer,
+  PropertyBindingManager,
+  createMqttHomieObserver,
+  src_default as default,
+  logger_default as logger,
+  setLogLevel
+};
+
+//# debugId=9D11516E7A875CE864756E2164756E21
