@@ -32,9 +32,9 @@ export class HomieNodeComponent extends HTMLElement {
 
     // Bind properties to attributes
     this.node.getAllProperties().forEach(prop => {
-      const element = this.querySelector(`.property:has(span:contains('${prop.name}'))`);
+      const element = this.querySelector(`.property`);
       if (element instanceof HTMLElement) {
-        this.bindingManager.bindProperty(prop, element, 'data-value');
+        this.bindingManager.bindPath(prop.id, element, 'data-value');
       }
     });
   }
