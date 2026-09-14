@@ -28,7 +28,7 @@ jobs:
       run: bun install --frozen-lockfile
     
     - name: Run unit tests
-      run: bun test --exclude integrationtest
+      run: bun test --path-ignore-patterns integrationtest
  
     # - name: Start Mosquitto
     #   uses: namoshek/mosquitto-github-action@v1
